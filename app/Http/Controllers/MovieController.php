@@ -56,38 +56,18 @@ class MovieController extends Controller
     public function updateMovie(Request $request, $id)
     {
 
-        $validator = Validator::make($request->all(), [
+        $validate = $request->validate([
             'movie_title' => 'sometimes | string | min:3 | max:255',
             'movie_synopsis' => 'sometimes | string | min:3'
         ]);
 
-        if ($validator->fails()) {
-            return response()->json([
-                'status' => 'error',
-                'message' => $validator->errors()
-            ], 422);
-        }
-
         $movie = Movie::findOrFail($id);
-        if (!$movie) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Movie not found'
-            ], 404);
-        }
 
-        if ($request->has('movie_title')) {
-            $movie->movie_title = $request->movie_title;
-        }
-        if ($request->has('movie_synopsis')) {
-            $movie->movie_synopsis = $request->movie_synopsis;
-        }
-
-        $movie->save();
+        $movie->update($validate);
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Movie update successfully',
+            'message' => 'Update movie success',
             'data' => $movie
         ]);
     }
