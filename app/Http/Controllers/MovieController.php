@@ -53,7 +53,7 @@ class MovieController extends Controller
     }
 
 
-    public function updateMovie(Request $request, $id)
+    public function updateMovie(Request $request, $id) : JsonResponse
     {
 
         $validate = $request->validate([
@@ -67,7 +67,7 @@ class MovieController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Update movie success',
+            'message' => 'Update movie successfully',
             'data' => $movie
         ]);
     }
