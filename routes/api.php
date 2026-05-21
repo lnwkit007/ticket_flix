@@ -13,6 +13,7 @@ Route::get('/movie/{id}', [MovieController::class, 'getMovie']);
 
 // Ticket
 Route::post('/ticket/booking', [TicketController::class, 'bookingTicket']);
+Route::get('/users/{userId}/tickets', [TicketController::class, 'getMyBookingHistory']);
 
 //////////////////////////////////// Admin ////////////////////////////////////
 

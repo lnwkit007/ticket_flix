@@ -4,12 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Showtime;
 use App\Models\Ticket;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class TicketController extends Controller
 {
-    public function bookingTicket(Request $request) : JsonResponse
+    public function bookingTicket(Request $request): JsonResponse
     {
         $request->validate([
             'user_id' => 'required | exists:users,id',
@@ -47,5 +48,23 @@ class TicketController extends Controller
             'message' => 'Ticketed sucsessfully !!',
             'data' => $ticket
         ], 201);
+    }
+
+    public function getMyBookingHistory($userId): JsonResponse
+    {
+        User::findOrFail($userId);
+
+        $tickets = Ticket::where('user_id', $userId)->with([
+            'showtime.movie',
+            'showtime.theater.theater_type'
+        ])
+        ->orderBy('created_at','desc')
+        ->get();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Get booking history successfully',
+            'data' => $tickets
+        ], 200);
     }
 }
