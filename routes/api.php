@@ -1,9 +1,13 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\ShowtimeController;
 use App\Http\Controllers\TicketController;
 use Illuminate\Support\Facades\Route;
+
+// Auth
+Route::post('/register', [AuthController::class, 'register']);
 
 //////////////////////////////////// Users ////////////////////////////////////
 
