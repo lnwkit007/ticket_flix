@@ -36,7 +36,8 @@ class AuthController extends Controller
         ], 201);
     }
 
-    public function login(Request $request) : JsonResponse
+
+    public function login(Request $request): JsonResponse
     {
         $request->validate([
             'user_email' => 'required|string|email',
@@ -62,6 +63,17 @@ class AuthController extends Controller
                 'token' => $token,
                 'token_type' => 'Bearer'
             ]
+        ], 200);
+    }
+
+
+    public function logout(Request $request) 
+    {
+        $request->user()->currentAccessToken()->delete();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Logout successfully'
         ], 200);
     }
 }

@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Route;
 // Auth
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
+Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sunctum');
 
 //////////////////////////////////// Users ////////////////////////////////////
 
@@ -17,14 +18,14 @@ Route::get('/movies', [MovieController::class, 'getMovies']);
 Route::get('/movie/{id}', [MovieController::class, 'getMovie']);
 
 // Ticket
-Route::post('/ticket/booking', [TicketController::class, 'bookingTicket']);
-Route::get('/users/{userId}/tickets', [TicketController::class, 'getMyBookingHistory']);
+Route::post('/ticket/booking', [TicketController::class, 'bookingTicket'])->middleware('auth:sunctum');
+Route::get('/users/{userId}/tickets', [TicketController::class, 'getMyBookingHistory'])->middleware('auth:sunctum');
 
 //////////////////////////////////// Admin ////////////////////////////////////
 
 // movie
-Route::post('/admin/movie', [MovieController::class, 'createMovie']);
-Route::patch('/admin/movie/{id}', [MovieController::class, 'updateMovie']);
+Route::post('/admin/movie', [MovieController::class, 'createMovie'])->middleware('auth:sunctum');
+Route::patch('/admin/movie/{id}', [MovieController::class, 'updateMovie'])->middleware('auth:sunctum');
 
 // showtime
-Route::post('/admin/showtime', [ShowtimeController::class, 'createShowtime']);
+Route::post('/admin/showtime', [ShowtimeController::class, 'createShowtime'])->middleware('auth:sunctum');

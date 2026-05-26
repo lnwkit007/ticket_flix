@@ -50,6 +50,7 @@ class TicketController extends Controller
         ], 201);
     }
 
+    
     public function getMyBookingHistory($userId): JsonResponse
     {
         User::findOrFail($userId);
