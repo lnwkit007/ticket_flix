@@ -9,35 +9,49 @@ use Illuminate\Support\Facades\Route;
 //////////////////////////////// No login required ////////////////////////////
 
 // Auth
-Route::post('/register', [AuthController::class, 'register']);
-Route::post('/login', [AuthController::class, 'login']);
+Route::controller(AuthController::class)->group(function () {
+    Route::post('/register', 'register');
+    Route::post('/login', 'login');
+});
 
 //////////////////////////////////// Users ////////////////////////////////////
 
 // Movie
-Route::get('/movies', [MovieController::class, 'getMovies']);
-Route::get('/movie/{id}', [MovieController::class, 'getMovie']);
+Route::controller(MovieController::class)->group(function () {
+    Route::get('/movies', 'getMovies');
+    Route::get('/movie/{id}', 'getMovie');
+});
 
 
 /////////////////////////////////// Login required /////////////////////////////////////////////////
-Route::middleware('auth:sanctum')->group(function() {
+Route::middleware('auth:sanctum')->group(function () {
 
     // Auth
-    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::controller(AuthController::class)->group(function () {
+        Route::post('/logout', 'logout');
+    });
 
     //////////////////////////////////// Users ////////////////////////////////////
 
     // Ticket
-    Route::post('/ticket/booking', [TicketController::class, 'bookingTicket']);
-    Route::get('/users/{userId}/tickets', [TicketController::class, 'getMyBookingHistory']);
+    Route::controller(TicketController::class)->group(function () {
+        Route::post('/ticket/booking', 'bookingTicket');
+        Route::get('/users/my/tickets', 'getMyBookingHistory');
+    });
 
     //////////////////////////////////// Admin ////////////////////////////////////
 
-    // Movie
-    Route::post('/admin/movie', [MovieController::class, 'createMovie']);
-    Route::patch('/admin/movie/{id}', [MovieController::class, 'updateMovie']);
+    Route::prefix('admin')->group(function () {
 
-    // Showtime
-    Route::post('/admin/showtime', [ShowtimeController::class, 'createShowtime']);
+        // Movie
+        Route::controller(MovieController::class)->group(function () {
+            Route::post('/movie', 'createMovie');
+            Route::patch('/movie/{id}', 'updateMovie');
+        });
 
+        // Showtime
+        Route::controller(ShowtimeController::class)->group(function () {
+            Route::post('/showtime', 'createShowtime');
+        });
+    });
 });

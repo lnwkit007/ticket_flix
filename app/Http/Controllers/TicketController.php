@@ -44,7 +44,7 @@ class TicketController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Ticketed sucsessfully !!',
+            'message' => 'Ticketed successfully !!',
             'data' => $ticket
         ], 201);
     }
