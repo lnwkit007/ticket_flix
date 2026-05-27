@@ -13,7 +13,6 @@ class TicketController extends Controller
     public function bookingTicket(Request $request): JsonResponse
     {
         $request->validate([
-            'user_id' => 'required | exists:users,id',
             'showtime_id' => 'required | exists:showtimes,id',
             'quantity_seats' => 'required | integer | min:1'
         ]);
@@ -37,7 +36,7 @@ class TicketController extends Controller
         $totalPrice = $request->quantity_seats * $showtime->base_price;
 
         $ticket = Ticket::create([
-            'user_id' => $request->user_id,
+            'user_id' => $request->user()->id,
             'showtime_id' => $request->showtime_id,
             'quantity_seats' => $request->quantity_seats,
             'ticket_price' => $totalPrice
@@ -50,17 +49,17 @@ class TicketController extends Controller
         ], 201);
     }
 
-    
-    public function getMyBookingHistory($userId): JsonResponse
-    {
-        User::findOrFail($userId);
 
-        $tickets = Ticket::where('user_id', $userId)->with([
+    public function getMyBookingHistory(Request $request): JsonResponse
+    {
+        $user = $request->user();
+
+        $tickets = Ticket::where('user_id', $user->id)->with([
             'showtime.movie',
             'showtime.theater.theater_type'
         ])
-        ->orderBy('created_at','desc')
-        ->get();
+            ->orderBy('created_at', 'desc')
+            ->get();
 
         return response()->json([
             'status' => 'success',
