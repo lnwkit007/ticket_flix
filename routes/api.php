@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\ShowtimeController;
 use App\Http\Controllers\TicketController;
+use App\Http\Middleware\IsAdmin;
 use Illuminate\Support\Facades\Route;
 
 //////////////////////////////// No login required ////////////////////////////
@@ -41,7 +42,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     //////////////////////////////////// Admin ////////////////////////////////////
 
-    Route::prefix('admin')->group(function () {
+    Route::prefix('admin')->middleware(IsAdmin::class)->group(function () {
 
         // Movie
         Route::controller(MovieController::class)->group(function () {

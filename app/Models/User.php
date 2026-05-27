@@ -14,7 +14,7 @@ class User extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable;
 
     protected $table = 'users';
-    protected $fillable = ['user_name', 'user_email', 'password'];
+    protected $fillable = ['user_name', 'user_email', 'password', 'role'];
     protected $hidden = ['password', 'remember_token'];
 
     public function tickets(): HasMany
