@@ -48,6 +48,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::controller(MovieController::class)->group(function () {
             Route::post('/movie', 'createMovie');
             Route::patch('/movie/{id}', 'updateMovie');
+            Route::delete('/movie/{id}', 'deleteMovie');
         });
 
         // Showtime

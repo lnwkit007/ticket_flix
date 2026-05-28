@@ -15,6 +15,7 @@ class AuthController extends Controller
             'user_name' => 'required|string|max:255',
             'user_email' => 'required|string|email|max:255|unique:users,user_email',
             'password' => 'required|string|min:8|confirmed'
+            // password_confirmation 
         ]);
 
         $user = User::create([
@@ -67,7 +68,7 @@ class AuthController extends Controller
     }
 
 
-    public function logout(Request $request) 
+    public function logout(Request $request) : JsonResponse
     {
         $request->user()->currentAccessToken()->delete();
 

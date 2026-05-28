@@ -36,7 +36,7 @@ class MovieController extends Controller
     {
         $request->validate([
             'movie_title' => 'required | string | min:3 | max:255',
-            'movie_synopsis' => 'required | string | min:3'
+            'movie_synopsis' => 'required | string | min:0'
         ]);
 
         $createMovie = Movie::create([
@@ -52,7 +52,7 @@ class MovieController extends Controller
     }
 
 
-    public function updateMovie(Request $request, $id) : JsonResponse
+    public function updateMovie(Request $request, $id): JsonResponse
     {
 
         $validate = $request->validate([
@@ -68,6 +68,19 @@ class MovieController extends Controller
             'status' => 'success',
             'message' => 'Update movie successfully',
             'data' => $movie
-        ]);
+        ], 200);
+    }
+
+
+    public function deleteMovie($id) : JsonResponse
+    {
+        $movie = Movie::findOrFail($id);
+
+        $movie->delete();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Movie deleted (soft delete) successfull'
+        ], 200);
     }
 }

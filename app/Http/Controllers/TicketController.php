@@ -55,7 +55,8 @@ class TicketController extends Controller
         $user = $request->user();
 
         $tickets = Ticket::where('user_id', $user->id)->with([
-            'showtime.movie',
+            'user',
+            'showtime.movie.tags',
             'showtime.theater.theater_type'
         ])
             ->orderBy('created_at', 'desc')
