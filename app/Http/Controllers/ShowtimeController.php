@@ -5,16 +5,17 @@ namespace App\Http\Controllers;
 use App\Models\Showtime;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class ShowtimeController extends Controller
 {
-    public function createShowtime(Request $request) : JsonResponse
+    public function createShowtime(Request $request): JsonResponse
     {
         $request->validate([
-            'movie_id' => 'required|exists:movies,id',      
-            'theater_id' => 'required|exists:theaters,id', 
-            'start_time' => 'required|date_format:Y-m-d H:i:s', 
-            'base_price' => 'required|numeric|min:0', 
+            'movie_id' => ['required', Rule::exists('movies', 'movie_id')->whereNull('deleted_at')],
+            'theater_id' => 'required|exists:theaters,id',
+            'start_time' => 'required|date_format:Y-m-d H:i:s',
+            'base_price' => 'required|numeric|min:0',
         ]);
 
         $showtime = Showtime::create([
@@ -26,7 +27,7 @@ class ShowtimeController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Create showtime successfully',
+            'message' => 'Create showtime successfully.',
             'data' => $showtime
         ], 201);
     }

@@ -14,7 +14,7 @@ class MovieController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'message' => 'get movies successfully',
+            'message' => 'get movies successfully.',
             'data' => $movies
         ], 200);
     }
@@ -26,7 +26,7 @@ class MovieController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'message' => 'get movie successfully',
+            'message' => 'get movie successfully.',
             'data' => $movie
         ], 200);
     }
@@ -46,7 +46,7 @@ class MovieController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Created movie successfully',
+            'message' => 'Created movie successfully.',
             'data' => $createMovie
         ], 201);
     }
@@ -66,13 +66,13 @@ class MovieController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Update movie successfully',
+            'message' => 'Update movie successfully.',
             'data' => $movie
         ], 200);
     }
 
 
-    public function deleteMovie($id) : JsonResponse
+    public function deleteMovie($id): JsonResponse
     {
         $movie = Movie::findOrFail($id);
 
@@ -80,7 +80,20 @@ class MovieController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Movie deleted (soft delete) successfull'
+            'message' => 'Movie deleted (soft delete) successfull.'
+        ], 200);
+    }
+
+
+    public function restoreMovie($id) : JsonResponse
+    {
+        $movie = Movie::withTrashed()->findOrFail($id);
+
+        $movie->restore();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => "Movie '{$movie->movie_title}' restored successfully."
         ], 200);
     }
 }

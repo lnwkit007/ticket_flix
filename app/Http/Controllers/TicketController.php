@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Showtime;
 use App\Models\Ticket;
-use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -44,7 +43,7 @@ class TicketController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Ticketed successfully !!',
+            'message' => 'Ticketed successfully.',
             'data' => $ticket
         ], 201);
     }
@@ -64,7 +63,7 @@ class TicketController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Get booking history successfully',
+            'message' => 'Get booking history successfully.',
             'data' => $tickets
         ], 200);
     }
