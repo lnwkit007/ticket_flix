@@ -12,7 +12,7 @@ class Movie extends Model
     use SoftDeletes;
 
     protected $table = 'movies';
-    protected $fillable = ['movie_title', 'movie_synopsis'];
+    protected $fillable = ['movie_title', 'movie_synopsis', 'movie_poster'];
 
     public function showtimes(): HasMany
     {
