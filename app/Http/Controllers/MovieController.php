@@ -37,13 +37,30 @@ class MovieController extends Controller
         $request->validate([
             'movie_title' => 'required|string|min:3|max:255',
             'movie_synopsis' => 'required|string',
-            'movie_poster' => 'nullable|mimes:jpeg,png,jpg,webp|max:2048'
+            'movie_poster' => 'required|mimes:jpeg,png,jpg,webp|max:2048'
         ]);
 
         $posterPath = null;
 
-        if ($request->hasFile('movie_poster')) {
-            $posterPath = $request->file('movie_poster')->store('movies', 'public');
+        if (isset($_FILES['movie_poster']) && $_FILES['movie_poster']['error'] === UPLOAD_ERR_OK) {
+
+            $tmpPath = $_FILES['movie_poster']['tmp_name'];
+            $originalName = $_FILES['movie_poster']['name'];
+            $extension = pathinfo($originalName, PATHINFO_EXTENSION);
+
+            $fileName = time() . '_' . uniqid() . '.' . $extension;
+
+            $targetDir = public_path('storage/movies');
+
+            if (!file_exists($targetDir)) {
+                mkdir($targetDir, 0755, true);
+            }
+
+            $targetFile = $targetDir . '/' . $fileName;
+
+            if (move_uploaded_file($tmpPath, $targetFile)) {
+                $posterPath = 'movies/' . $fileName;
+            }
         }
 
         $createMovie = Movie::create([
@@ -93,7 +110,7 @@ class MovieController extends Controller
     }
 
 
-    public function restoreMovie($id) : JsonResponse
+    public function restoreMovie($id): JsonResponse
     {
         $movie = Movie::withTrashed()->findOrFail($id);
 
