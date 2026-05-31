@@ -35,13 +35,21 @@ class MovieController extends Controller
     public function createMovie(Request $request): JsonResponse
     {
         $request->validate([
-            'movie_title' => 'required | string | min:3 | max:255',
-            'movie_synopsis' => 'required | string | min:0',
+            'movie_title' => 'required|string|min:3|max:255',
+            'movie_synopsis' => 'required|string',
+            'movie_poster' => 'nullable|mimes:jpeg,png,jpg,webp|max:2048'
         ]);
+
+        $posterPath = null;
+
+        if ($request->hasFile('movie_poster')) {
+            $posterPath = $request->file('movie_poster')->store('movies', 'public');
+        }
 
         $createMovie = Movie::create([
             'movie_title' => $request->movie_title,
-            'movie_synopsis' => $request->movie_synopsis
+            'movie_synopsis' => $request->movie_synopsis,
+            'movie_poster' => $posterPath
         ]);
 
         return response()->json([
@@ -56,8 +64,8 @@ class MovieController extends Controller
     {
 
         $validate = $request->validate([
-            'movie_title' => 'sometimes | string | min:3 | max:255',
-            'movie_synopsis' => 'sometimes | string | min:3'
+            'movie_title' => 'sometimes|string|min:3|max:255',
+            'movie_synopsis' => 'sometimes|string|min:3'
         ]);
 
         $movie = Movie::findOrFail($id);

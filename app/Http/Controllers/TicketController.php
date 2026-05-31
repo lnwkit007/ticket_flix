@@ -12,8 +12,8 @@ class TicketController extends Controller
     public function bookingTicket(Request $request): JsonResponse
     {
         $request->validate([
-            'showtime_id' => 'required | exists:showtimes,id',
-            'quantity_seats' => 'required | integer | min:1'
+            'showtime_id' => 'required|exists:showtimes,id',
+            'quantity_seats' => 'required|integer|min:1'
         ]);
 
         $showtime = Showtime::with('theater')->find($request->showtime_id);
