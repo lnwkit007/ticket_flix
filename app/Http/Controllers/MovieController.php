@@ -87,7 +87,9 @@ class MovieController extends Controller
 
         $movie = Movie::findOrFail($id);
 
-        $posterPath = $movie->movie_poster;
+        $movie->update(
+            $request->only(['movie_title', 'movie_synopsis'])
+        );
 
         if ($request->has('movie_poster') && $request->file('movie_poster')->isValid()) {
             if ($movie->movie_poster) {
@@ -106,21 +108,10 @@ class MovieController extends Controller
             $file->move(public_path('storage/movies'), $fileName);
 
             $posterPath = 'movies/' . $fileName;
+            $movie->update(['movie_poster' => $posterPath]);
         }
 
-        $movie->update([
-            'movie_title' => $request->movie_title,
-            'movie_synopsis' => $request->movie_synopsis,
-            'movie_poster' => $posterPath
-        ]);
-
         if ($request->has('tags')) {
-            $tags = $request->tags;
-
-            if (is_string($tags)) {
-                $tags = explode(',' , $tags);
-            }
-
             $movie->tags()->sync($request->tags);
         }
 
