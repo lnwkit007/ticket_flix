@@ -51,7 +51,7 @@ class MovieController extends Controller
             $fileName = time() . '_' . uniqid() . '.' . $extension;
 
             $file->move(public_path('storage/movies'), $fileName);
-            
+
             $posterPath = 'movies/' . $fileName;
         }
 
@@ -77,14 +77,40 @@ class MovieController extends Controller
 
     public function updateMovie(Request $request, $id): JsonResponse
     {
-        $validate = $request->validate([
+        $request->validate([
             'movie_title' => 'sometimes|string|min:3|max:255',
-            'movie_synopsis' => 'sometimes|string|min:3'
+            'movie_synopsis' => 'sometimes|string|min:3',
+            'movie_poster' => 'sometimes|mimes:jpeg,png,jpg,webp|max:2048'
         ]);
 
         $movie = Movie::findOrFail($id);
 
-        $movie->update($validate);
+        $posterPath = $movie->movie_poster;
+
+        if ($request->has('movie_poster') && $request->file('movie_poster')->isValid()) {
+            if ($movie->movie_poster) {
+                $oldPosterPath = public_path('storage/' . $movie->movie_poster);
+
+                if (file_exists($oldPosterPath)) {
+                    unlink($oldPosterPath);
+                }
+            }
+
+            $file = $request->file('movie_poster');
+            $extension = $file->getClientOriginalExtension();
+
+            $fileName = time() . '_' . uniqid() . '.' . $extension;
+
+            $file->move(public_path('storage/movies'), $fileName);
+
+            $posterPath = 'movies/' . $fileName;
+        }
+
+        $movie->update([
+            'movie_title' => $request->movie_title,
+            'movie_synopsis' => $request->movie_synopsis,
+            'movie_poster' => $posterPath
+        ]);
 
         return response()->json([
             'status' => 'success',
