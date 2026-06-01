@@ -10,6 +10,7 @@ class Showtime extends Model
 {
     protected $table = 'showtimes';
     protected $fillable = ['start_time', 'base_price', 'movie_id', 'theater_id'];
+    protected $hidden = ['created_at', 'updated_at'];   
 
     public function movie(): BelongsTo
     {

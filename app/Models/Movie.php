@@ -14,6 +14,7 @@ class Movie extends Model
 
     protected $table = 'movies';
     protected $fillable = ['movie_title', 'movie_synopsis', 'movie_poster'];
+    protected $hidden = ['created_at', 'updated_at']; 
 
     public function showtimes(): HasMany
     {

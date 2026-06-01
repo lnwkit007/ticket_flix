@@ -9,10 +9,22 @@ use Illuminate\Validation\Rule;
 
 class ShowtimeController extends Controller
 {
+    public function getShowtimes() : JsonResponse
+    {
+        $showtimes = Showtime::with('movie.tags', 'theater.theater_type')->get();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'get showtimes successfully.',
+            'data' => $showtimes
+        ], 200);
+    }
+
+
     public function createShowtime(Request $request): JsonResponse
     {
         $request->validate([
-            'movie_id' => ['required', Rule::exists('movies', 'movie_id')->whereNull('deleted_at')],
+            'movie_id' => ['required', Rule::exists('movies', 'id')->whereNull('deleted_at')],
             'theater_id' => 'required|exists:theaters,id',
             'start_time' => 'required|date_format:Y-m-d H:i:s',
             'base_price' => 'required|numeric|min:0',
@@ -30,5 +42,24 @@ class ShowtimeController extends Controller
             'message' => 'Create showtime successfully.',
             'data' => $showtime
         ], 201);
+    }
+
+    public function updateShowtime(Request $request, $id) {
+        $validate = $request->validate([
+            'movie_id' => ['sometimes' , Rule::exists('movies', 'id')->whereNull('deleted_at')],
+            'theater_id' => 'sometimes|exists:theaters,id',
+            'start_time' => 'sometimes|date_format:Y-m-d H:i:s',
+            'base_price' => 'sometimes|numeric|min:0'
+        ]);
+
+        $showtime = Showtime::findOrFail($id);
+
+        $showtime->update($validate);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Updated showtime successfully.',
+            'data' => $showtime
+        ], 200);
     }
 }

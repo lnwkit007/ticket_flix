@@ -23,6 +23,11 @@ Route::controller(MovieController::class)->group(function () {
     Route::get('/movie/{id}', 'getMovie');
 });
 
+// Showtime
+Route::controller(ShowtimeController::class)->group(function () {
+    Route::get('/showtimes', 'getShowtimes');
+});
+
 
 /////////////////////////////////// Login required /////////////////////////////////////////////////
 Route::middleware('auth:sanctum')->group(function () {
@@ -55,6 +60,7 @@ Route::middleware('auth:sanctum')->group(function () {
         // Showtime
         Route::controller(ShowtimeController::class)->group(function () {
             Route::post('/showtime', 'createShowtime');
+            Route::patch('/showtime/{id}', 'updateShowtime');
         });
     });
 });

@@ -9,6 +9,7 @@ class MovieTag extends Model
 {
     protected $table = 'movie_tag';
     protected $fillable = ['movie_tag_name'];
+    protected $hidden = ['created_at', 'updated_at', 'pivot'];
 
     public function movies(): BelongsToMany
     {

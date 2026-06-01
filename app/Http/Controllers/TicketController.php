@@ -9,6 +9,26 @@ use Illuminate\Http\Request;
 
 class TicketController extends Controller
 {
+    public function getMyBookingHistory(Request $request): JsonResponse
+    {
+        $user = $request->user();
+
+        $tickets = Ticket::where('user_id', $user->id)->with([
+            'user',
+            'showtime.movie.tags',
+            'showtime.theater.theater_type'
+        ])
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Get booking history successfully.',
+            'data' => $tickets
+        ], 200);
+    }
+
+
     public function bookingTicket(Request $request): JsonResponse
     {
         $request->validate([
@@ -46,25 +66,5 @@ class TicketController extends Controller
             'message' => 'Ticketed successfully.',
             'data' => $ticket
         ], 201);
-    }
-
-
-    public function getMyBookingHistory(Request $request): JsonResponse
-    {
-        $user = $request->user();
-
-        $tickets = Ticket::where('user_id', $user->id)->with([
-            'user',
-            'showtime.movie.tags',
-            'showtime.theater.theater_type'
-        ])
-            ->orderBy('created_at', 'desc')
-            ->get();
-
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Get booking history successfully.',
-            'data' => $tickets
-        ], 200);
     }
 }
