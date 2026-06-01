@@ -80,7 +80,9 @@ class MovieController extends Controller
         $request->validate([
             'movie_title' => 'sometimes|string|min:3|max:255',
             'movie_synopsis' => 'sometimes|string|min:3',
-            'movie_poster' => 'sometimes|mimes:jpeg,png,jpg,webp|max:2048'
+            'movie_poster' => 'sometimes|mimes:jpeg,png,jpg,webp|max:2048',
+            'tags' => 'sometimes|array',
+            'tags.*' => 'integer|exists:movie_tag,id'
         ]);
 
         $movie = Movie::findOrFail($id);
@@ -111,6 +113,18 @@ class MovieController extends Controller
             'movie_synopsis' => $request->movie_synopsis,
             'movie_poster' => $posterPath
         ]);
+
+        if ($request->has('tags')) {
+            $tags = $request->tags;
+
+            if (is_string($tags)) {
+                $tags = explode(',' , $tags);
+            }
+
+            $movie->tags()->sync($request->tags);
+        }
+
+        $movie->load('tags');
 
         return response()->json([
             'status' => 'success',
