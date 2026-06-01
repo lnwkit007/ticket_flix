@@ -30,6 +30,7 @@ class Movie extends Model
         );
     }
 
+    
     public function moviePoster() : Attribute 
     {
         return Attribute::make(

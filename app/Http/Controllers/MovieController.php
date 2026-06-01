@@ -42,25 +42,15 @@ class MovieController extends Controller
 
         $posterPath = null;
 
-        if (isset($_FILES['movie_poster']) && $_FILES['movie_poster']['error'] === UPLOAD_ERR_OK) {
-
-            $tmpPath = $_FILES['movie_poster']['tmp_name'];
-            $originalName = $_FILES['movie_poster']['name'];
-            $extension = pathinfo($originalName, PATHINFO_EXTENSION);
-
+        if ($request->hasFile('movie_poster') && $request->file('movie_poster')->isValid()) {
+            $file = $request->file('movie_poster');
+            $extension = $file->getClientOriginalExtension();
+            
             $fileName = time() . '_' . uniqid() . '.' . $extension;
 
-            $targetDir = public_path('storage/movies');
-
-            if (!file_exists($targetDir)) {
-                mkdir($targetDir, 0755, true);
-            }
-
-            $targetFile = $targetDir . '/' . $fileName;
-
-            if (move_uploaded_file($tmpPath, $targetFile)) {
-                $posterPath = 'movies/' . $fileName;
-            }
+            $file->move(public_path('storage/movies'), $fileName);
+            
+            $posterPath = 'movies/' . $fileName;
         }
 
         $createMovie = Movie::create([
@@ -79,7 +69,6 @@ class MovieController extends Controller
 
     public function updateMovie(Request $request, $id): JsonResponse
     {
-
         $validate = $request->validate([
             'movie_title' => 'sometimes|string|min:3|max:255',
             'movie_synopsis' => 'sometimes|string|min:3'
