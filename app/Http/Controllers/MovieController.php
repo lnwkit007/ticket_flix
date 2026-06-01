@@ -37,7 +37,9 @@ class MovieController extends Controller
         $request->validate([
             'movie_title' => 'required|string|min:3|max:255',
             'movie_synopsis' => 'required|string',
-            'movie_poster' => 'required|mimes:jpeg,png,jpg,webp|max:2048'
+            'movie_poster' => 'required|mimes:jpeg,png,jpg,webp|max:2048',
+            'tags' => 'nullable',
+            'tags.*' => 'exists:movie_tag,id'
         ]);
 
         $posterPath = null;
@@ -45,7 +47,7 @@ class MovieController extends Controller
         if ($request->hasFile('movie_poster') && $request->file('movie_poster')->isValid()) {
             $file = $request->file('movie_poster');
             $extension = $file->getClientOriginalExtension();
-            
+
             $fileName = time() . '_' . uniqid() . '.' . $extension;
 
             $file->move(public_path('storage/movies'), $fileName);
@@ -58,6 +60,12 @@ class MovieController extends Controller
             'movie_synopsis' => $request->movie_synopsis,
             'movie_poster' => $posterPath
         ]);
+
+        if ($request->has('tags')) {
+            $createMovie->tags()->sync($request->tags);
+        }
+
+        $createMovie->load('tags');
 
         return response()->json([
             'status' => 'success',
