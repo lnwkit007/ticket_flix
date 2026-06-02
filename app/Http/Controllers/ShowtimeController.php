@@ -9,7 +9,7 @@ use Illuminate\Validation\Rule;
 
 class ShowtimeController extends Controller
 {
-    public function getShowtimes() : JsonResponse
+    public function getShowtimes(): JsonResponse
     {
         $showtimes = Showtime::with('movie.tags', 'theater.theater_type')->get();
 
@@ -45,10 +45,10 @@ class ShowtimeController extends Controller
     }
 
 
-    public function updateShowtime(Request $request, $id) : JsonResponse 
+    public function updateShowtime(Request $request, $id): JsonResponse
     {
         $validate = $request->validate([
-            'movie_id' => ['sometimes' , Rule::exists('movies', 'id')->whereNull('deleted_at')],
+            'movie_id' => ['sometimes', Rule::exists('movies', 'id')->whereNull('deleted_at')],
             'theater_id' => 'sometimes|exists:theaters,id',
             'start_time' => 'sometimes|date_format:Y-m-d H:i:s',
             'base_price' => 'sometimes|numeric|min:0'
@@ -66,7 +66,8 @@ class ShowtimeController extends Controller
     }
 
 
-    public function deleteShowtime($id) {
+    public function deleteShowtime($id): JsonResponse
+    {
         $showtime = Showtime::findOrFail($id);
 
         $showtime->delete();
@@ -78,7 +79,19 @@ class ShowtimeController extends Controller
     }
 
 
-    public function restoreShowtime($id) : JsonResponse
+    public function getRestoreShowtime(): JsonResponse
+    {
+        $showtime = Showtime::onlyTrashed()->with('movie.tags')->get();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Geted showtime in trashed successfully.',
+            'data' => $showtime
+        ], 200);
+    }
+
+
+    public function restoreShowtime($id): JsonResponse
     {
         $showtime = Showtime::withTrashed()->findOrFail($id);
 

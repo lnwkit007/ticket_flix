@@ -68,7 +68,8 @@ class MovieTagController extends Controller
     }
 
 
-    public function getRestoreMovieTag() {
+    public function getRestoreMovieTag(): JsonResponse
+    {
         $movieTag = MovieTag::onlyTrashed()->get();
 
         return response()->json([

@@ -68,7 +68,7 @@ class AuthController extends Controller
     }
 
 
-    public function logout(Request $request) : JsonResponse
+    public function logout(Request $request): JsonResponse
     {
         $request->user()->currentAccessToken()->delete();
 
