@@ -138,6 +138,18 @@ class MovieController extends Controller
     }
 
 
+    public function getRestoreMovie(): JsonResponse
+    {
+        $movie = Movie::onlyTrashed()->with('tags')->get();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Geted movie in trashed successfully.',
+            'data' => $movie
+        ], 200);
+    }
+
+
     public function restoreMovie($id): JsonResponse
     {
         $movie = Movie::withTrashed()->findOrFail($id);

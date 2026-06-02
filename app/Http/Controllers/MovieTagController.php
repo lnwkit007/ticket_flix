@@ -63,7 +63,7 @@ class MovieTagController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Deleted movie tag successfully.'
+            'message' => 'Movie Tag deleted (soft delete) successfully.'
         ], 200);
     }
 

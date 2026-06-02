@@ -74,7 +74,7 @@ class ShowtimeController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Deleted showtime successfully.'
+            'message' => 'Showtime Deleted (soft delete) successfully.'
         ], 200);
     }
 
