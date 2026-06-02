@@ -44,7 +44,7 @@ class ShowtimeController extends Controller
         ], 201);
     }
 
-    
+
     public function updateShowtime(Request $request, $id) : JsonResponse 
     {
         $validate = $request->validate([
@@ -74,6 +74,19 @@ class ShowtimeController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'Deleted showtime successfully.'
+        ], 200);
+    }
+
+
+    public function restoreShowtime($id) : JsonResponse
+    {
+        $showtime = Showtime::withTrashed()->findOrFail($id);
+
+        $showtime->restore();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => "Showtime 'id: $showtime->id' restored successfully."
         ], 200);
     }
 }

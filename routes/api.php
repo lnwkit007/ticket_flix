@@ -62,6 +62,7 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::post('/showtime', 'createShowtime');
             Route::patch('/showtime/{id}', 'updateShowtime');
             Route::delete('/showtime/{id}', 'deleteShowtime');
+            Route::post('/showtime/{id}/restore', 'restoreShowtime');
         });
     });
 });
