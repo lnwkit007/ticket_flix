@@ -62,6 +62,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::controller(MovieTagController::class)->group(function () {
             Route::get('/movie_tags', 'getMovieTags');
             Route::post('/movie_tag', 'createMovieTag');
+            Route::put('/movie_tag/{id}', 'updateMoiveTag');
         });
 
         // Showtime
