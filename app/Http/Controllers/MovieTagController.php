@@ -38,7 +38,7 @@ class MovieTagController extends Controller
     }
 
 
-    public function updateMovieTag(Request $request, $id) : JsonResponse
+    public function updateMovieTag(Request $request, $id): JsonResponse
     {
         $validate = $request->validate([
             'movie_tag_name' => 'required|string|max:255'
@@ -55,7 +55,7 @@ class MovieTagController extends Controller
     }
 
 
-    public function deleteMovieTag($id) : JsonResponse
+    public function deleteMovieTag($id): JsonResponse
     {
         $movieTag = MovieTag::findOrFail($id);
 
@@ -68,7 +68,19 @@ class MovieTagController extends Controller
     }
 
 
-    public function restoreMovieTag($id) {
+    public function getRestoreMovieTag() {
+        $movieTag = MovieTag::onlyTrashed()->get();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Geted movie tag in trashed successfully.',
+            'data' => $movieTag
+        ], 200);
+    }
+
+
+    public function restoreMovieTag($id): JsonResponse
+    {
         $movieTag = MovieTag::withTrashed()->findOrFail($id);
 
         $movieTag->restore();

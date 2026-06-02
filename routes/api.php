@@ -64,6 +64,7 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::post('/movie_tag', 'createMovieTag');
             Route::put('/movie_tag/{id}', 'updateMoiveTag');
             Route::delete('/movie_tag/{id}', 'deleteMovieTag');
+            Route::get('/movie_tag/restore', 'getRestoreMovieTag');
             Route::post('/movie_tag/{id}/restore', 'restoreMovieTag');
         });
 
