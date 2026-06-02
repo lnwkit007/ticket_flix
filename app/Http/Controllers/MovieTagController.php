@@ -8,14 +8,32 @@ use Illuminate\Http\Request;
 
 class MovieTagController extends Controller
 {
-    public function getMovieTags() : JsonResponse
+    public function getMovieTags(): JsonResponse
     {
-        $movie_tag = MovieTag::all();
+        $movieTag = MovieTag::all();
 
         return response()->json([
             'status' => 'success',
             'message' => 'Geted movie tag successfully.',
-            'data' => $movie_tag
+            'data' => $movieTag
         ], 200);
+    }
+
+
+    public function createMovieTag(Request $request) : JsonResponse
+    {
+        $request->validate([
+            'movie_tag_name' => 'required|string|max:255'
+        ]);
+
+        $movieTag = MovieTag::create([
+            'movie_tag_name' => $request->movie_tag_name
+        ]);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Created movie tag successfully.',
+            'data' => $movieTag
+        ], 201);
     }
 }
