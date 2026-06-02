@@ -44,7 +44,9 @@ class ShowtimeController extends Controller
         ], 201);
     }
 
-    public function updateShowtime(Request $request, $id) {
+    
+    public function updateShowtime(Request $request, $id) : JsonResponse 
+    {
         $validate = $request->validate([
             'movie_id' => ['sometimes' , Rule::exists('movies', 'id')->whereNull('deleted_at')],
             'theater_id' => 'sometimes|exists:theaters,id',
@@ -60,6 +62,18 @@ class ShowtimeController extends Controller
             'status' => 'success',
             'message' => 'Updated showtime successfully.',
             'data' => $showtime
+        ], 200);
+    }
+
+
+    public function deleteShowtime($id) {
+        $showtime = Showtime::findOrFail($id);
+
+        $showtime->delete();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Deleted showtime successfully.'
         ], 200);
     }
 }
