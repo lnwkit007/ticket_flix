@@ -43,5 +43,22 @@ class TheaterController extends Controller
     }
 
 
+    public function updateTheater(Request $request, $id): JsonResponse
+    {
+        $validate = $request->validate([
+            'theater_name' => 'sometimes|string|max:255',
+            'seats_maximum' => 'sometimes|integer|min:1',
+            'theater_type_id' => ['required', Rule::exists('theater_type', 'id')]
+        ]);
 
+        $theater = Theater::findOrFail($id);
+
+        $theater->update($validate);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Updated theater successfully.',
+            'data' => $theater
+        ], 200);
+    }
 }
