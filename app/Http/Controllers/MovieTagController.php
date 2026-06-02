@@ -50,7 +50,8 @@ class MovieTagController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Updated movie tag successfully.'
+            'message' => 'Updated movie tag successfully.',
+            'data' => $movieTag
         ], 200);
     }
 

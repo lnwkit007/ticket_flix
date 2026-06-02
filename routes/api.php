@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\MovieTagController;
 use App\Http\Controllers\ShowtimeController;
+use App\Http\Controllers\TheaterController;
 use App\Http\Controllers\TicketController;
 use App\Http\Middleware\IsAdmin;
 use Illuminate\Support\Facades\Route;
@@ -63,7 +64,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::controller(MovieTagController::class)->group(function () {
             Route::get('/movie_tags', 'getMovieTags');
             Route::post('/movie_tag', 'createMovieTag');
-            Route::put('/movie_tag/{id}', 'updateMoiveTag');
+            Route::put('/movie_tag/{id}', 'updateMovieTag');
             Route::delete('/movie_tag/{id}', 'deleteMovieTag');
             Route::get('/movie_tags/restore', 'getRestoreMovieTag');
             Route::post('/movie_tag/{id}/restore', 'restoreMovieTag');
@@ -76,6 +77,11 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::delete('/showtime/{id}', 'deleteShowtime');
             Route::get('/showtimes/restore', 'getRestoreShowtime');
             Route::post('/showtime/{id}/restore', 'restoreShowtime');
+        });
+
+        // Theater
+        Route::controller(TheaterController::class)->group(function () {
+            Route::get('/theaters', 'getTheater');
         });
     });
 });
