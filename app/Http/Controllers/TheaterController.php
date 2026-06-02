@@ -41,4 +41,7 @@ class TheaterController extends Controller
             'data' => $theater
         ], 201);
     }
+
+
+
 }

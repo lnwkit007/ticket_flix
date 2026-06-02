@@ -83,6 +83,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::controller(TheaterController::class)->group(function () {
             Route::get('/theaters', 'getTheater');
             Route::post('/theater', 'createTheater');   
+            Route::put('/theater/{id}', 'updateTheater');
         });
     });
 });
