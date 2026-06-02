@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MovieController;
+use App\Http\Controllers\MovieTagController;
 use App\Http\Controllers\ShowtimeController;
 use App\Http\Controllers\TicketController;
 use App\Http\Middleware\IsAdmin;
@@ -55,6 +56,11 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::patch('/movie/{id}', 'updateMovie');
             Route::delete('/movie/{id}', 'deleteMovie');
             Route::post('/movie/{id}/restore', 'restoreMovie');
+        });
+
+        // MovieTag
+        Route::controller(MovieTagController::class)->group(function () {
+            Route::get('/movie_tags', 'getMovieTags');
         });
 
         // Showtime

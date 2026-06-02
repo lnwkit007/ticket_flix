@@ -23,7 +23,7 @@ class TicketController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Get booking history successfully.',
+            'message' => 'Geted booking history successfully.',
             'data' => $tickets
         ], 200);
     }

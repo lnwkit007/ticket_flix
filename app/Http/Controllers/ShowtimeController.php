@@ -15,7 +15,7 @@ class ShowtimeController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'message' => 'get showtimes successfully.',
+            'message' => 'Geted showtimes successfully.',
             'data' => $showtimes
         ], 200);
     }

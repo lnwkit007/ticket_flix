@@ -14,7 +14,7 @@ class MovieController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'message' => 'get movies successfully.',
+            'message' => 'Geted movies successfully.',
             'data' => $movies
         ], 200);
     }
@@ -26,7 +26,7 @@ class MovieController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'message' => 'get movie successfully.',
+            'message' => 'Geted movie successfully.',
             'data' => $movie
         ], 200);
     }
