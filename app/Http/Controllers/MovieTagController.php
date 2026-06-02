@@ -66,4 +66,16 @@ class MovieTagController extends Controller
             'message' => 'Deleted movie tag successfully.'
         ], 200);
     }
+
+
+    public function restoreMovieTag($id) {
+        $movieTag = MovieTag::withTrashed()->findOrFail($id);
+
+        $movieTag->restore();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => "Movie Tag 'id: $movieTag->id' restored successfully."
+        ], 200);
+    }
 }
