@@ -38,7 +38,7 @@ class MovieTagController extends Controller
     }
 
 
-    public function updateMovieTag(Request $request, $id)
+    public function updateMovieTag(Request $request, $id) : JsonResponse
     {
         $validate = $request->validate([
             'movie_tag_name' => 'required|string|max:255'
@@ -51,6 +51,19 @@ class MovieTagController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'Updated movie tag successfully.'
+        ], 200);
+    }
+
+
+    public function deleteMovieTag($id) : JsonResponse
+    {
+        $movieTag = MovieTag::findOrFail($id);
+
+        $movieTag->delete();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Deleted movie tag successfully.'
         ], 200);
     }
 }
