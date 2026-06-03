@@ -25,7 +25,7 @@ class ShowtimeController extends Controller
     {
         $request->validate([
             'movie_id' => ['required', Rule::exists('movies', 'id')->whereNull('deleted_at')],
-            'theater_id' => 'required|exists:theaters,id',
+            'theater_id' => ['required', Rule::exists('theaters', 'id')->whereNull('deleted_at')],
             'start_time' => 'required|date_format:Y-m-d H:i:s',
             'base_price' => 'required|numeric|min:0',
         ]);
@@ -49,7 +49,7 @@ class ShowtimeController extends Controller
     {
         $validate = $request->validate([
             'movie_id' => ['sometimes', Rule::exists('movies', 'id')->whereNull('deleted_at')],
-            'theater_id' => 'sometimes|exists:theaters,id',
+            'theater_id' => ['sometimes', Rule::exists('theaters', 'id')->whereNull('deleted_at')],
             'start_time' => 'sometimes|date_format:Y-m-d H:i:s',
             'base_price' => 'sometimes|numeric|min:0'
         ]);
