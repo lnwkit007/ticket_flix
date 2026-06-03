@@ -48,7 +48,7 @@ class TheaterController extends Controller
         $validate = $request->validate([
             'theater_name' => 'sometimes|string|max:255',
             'seats_maximum' => 'sometimes|integer|min:1',
-            'theater_type_id' => ['required', Rule::exists('theater_type', 'id')]
+            'theater_type_id' => ['sometimes', Rule::exists('theater_type', 'id')]
         ]);
 
         $theater = Theater::findOrFail($id);

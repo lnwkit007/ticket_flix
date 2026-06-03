@@ -33,6 +33,24 @@ class TheaterTypeController extends Controller
             'status' => 'success',
             'message' => 'Created theater type successfully.',
             'data' => $theaterType
+        ], 201);
+    }
+
+
+    public function updateTheaterType(Request $request, $id): JsonResponse
+    {
+        $validate = $request->validate([
+            'theater_type_name' => 'required|string|max:255'
+        ]);
+
+        $theaterType = TheaterType::findOrFail($id);
+
+        $theaterType->update($validate);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Updated theater type successfully.',
+            'data' => $theaterType
         ], 200);
     }
 }
