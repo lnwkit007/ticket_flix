@@ -5,6 +5,7 @@ use App\Http\Controllers\MovieController;
 use App\Http\Controllers\MovieTagController;
 use App\Http\Controllers\ShowtimeController;
 use App\Http\Controllers\TheaterController;
+use App\Http\Controllers\TheaterTypeController;
 use App\Http\Controllers\TicketController;
 use App\Http\Middleware\IsAdmin;
 use Illuminate\Support\Facades\Route;
@@ -87,6 +88,11 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::delete('/theater/{id}', 'deleteTheater');
             Route::get('/theaters/restore', 'getRestoreTheater');
             Route::post('/theater/{id}/restore', 'restoreTheater');
+        });
+
+        // TheaterType
+        Route::controller(TheaterTypeController::class)->group(function () {
+            Route::get('/theater_types', 'getTheaterType');
         });
     });
 });
