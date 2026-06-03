@@ -93,6 +93,7 @@ Route::middleware('auth:sanctum')->group(function () {
         // TheaterType
         Route::controller(TheaterTypeController::class)->group(function () {
             Route::get('/theater_types', 'getTheaterType');
+            Route::post('/theater_type', 'createTheaterType');
         });
     });
 });

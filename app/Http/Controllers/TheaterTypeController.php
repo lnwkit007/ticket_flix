@@ -18,4 +18,21 @@ class TheaterTypeController extends Controller
             'data' => $theaterType
         ], 200);
     }
+
+    public function createTheaterType(Request $request): JsonResponse
+    {
+        $request->validate([
+            'theater_type_name' => 'required|string|max:255'
+        ]);
+
+        $theaterType = TheaterType::create([
+            'theater_type_name' => $request->theater_type_name
+        ]);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Created theater type successfully.',
+            'data' => $theaterType
+        ], 200);
+    }
 }
