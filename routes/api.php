@@ -84,7 +84,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::controller(TheaterController::class)->group(function () {
             Route::get('/theaters', 'getTheater');
             Route::post('/theater', 'createTheater');   
-            Route::put('/theater/{id}', 'updateTheater');
+            Route::patch('/theater/{id}', 'updateTheater');
             Route::delete('/theater/{id}', 'deleteTheater');
             Route::get('/theaters/restore', 'getRestoreTheater');
             Route::post('/theater/{id}/restore', 'restoreTheater');

@@ -19,6 +19,7 @@ class TheaterTypeController extends Controller
         ], 200);
     }
 
+    
     public function createTheaterType(Request $request): JsonResponse
     {
         $request->validate([
