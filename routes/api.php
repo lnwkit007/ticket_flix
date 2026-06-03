@@ -85,7 +85,8 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::post('/theater', 'createTheater');   
             Route::put('/theater/{id}', 'updateTheater');
             Route::delete('/theater/{id}', 'deleteTheater');
-            Route::get('/theater/restore', 'getRestoreTheater');
+            Route::get('/theaters/restore', 'getRestoreTheater');
+            Route::post('/theater/{id}/restore', 'restoreTheater');
         });
     });
 });
