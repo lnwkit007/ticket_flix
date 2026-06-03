@@ -61,4 +61,17 @@ class TheaterController extends Controller
             'data' => $theater
         ], 200);
     }
+
+
+    public function deleteTheater($id): JsonResponse
+    {
+        $theater = Theater::findOrFail($id);
+
+        $theater->delete();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Theater deleted (soft delete) successfully.'
+        ], 200);
+    }
 }
