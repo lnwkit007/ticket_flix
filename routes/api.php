@@ -95,6 +95,7 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::get('/theater_types', 'getTheaterType');
             Route::post('/theater_type', 'createTheaterType');
             Route::put('/theater_type/{id}', 'updateTheaterType');
+            Route::delete('/theater_type/{id}', 'deleteTheaterType');
         });
     });
 });

@@ -19,7 +19,7 @@ class TheaterTypeController extends Controller
         ], 200);
     }
 
-    
+
     public function createTheaterType(Request $request): JsonResponse
     {
         $request->validate([
@@ -52,6 +52,19 @@ class TheaterTypeController extends Controller
             'status' => 'success',
             'message' => 'Updated theater type successfully.',
             'data' => $theaterType
+        ], 200);
+    }
+
+
+    public function deleteTheaterType($id): JsonResponse
+    {
+        $theaterType = TheaterType::findOrFail($id);
+
+        $theaterType->delete();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'TheaterType deleted (soft delete) successfully.'
         ], 200);
     }
 }
