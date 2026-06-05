@@ -79,4 +79,17 @@ class TheaterTypeController extends Controller
             'data' => $theaterType
         ], 200);
     }
+
+
+    public function restoreTheaterType($id): JsonResponse
+    {
+        $theaterType = TheaterType::withTrashed()->findOrFail($id);
+
+        $theaterType->restore();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => "TheaterType 'id: $theaterType->id' restored successfully."
+        ], 200);
+    }
 }
