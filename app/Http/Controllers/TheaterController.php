@@ -82,7 +82,7 @@ class TheaterController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Geted theater successfully.',
+            'message' => 'Geted theater in trashed successfully.',
             'data' => $theater
         ], 200);
     }

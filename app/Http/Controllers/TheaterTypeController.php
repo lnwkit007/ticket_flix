@@ -67,4 +67,16 @@ class TheaterTypeController extends Controller
             'message' => 'TheaterType deleted (soft delete) successfully.'
         ], 200);
     }
+
+
+    public function getRestoreTheaterType(): JsonResponse
+    {
+        $theaterType = TheaterType::onlyTrashed()->get();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Geted theater type in trashed successfully.',
+            'data' => $theaterType
+        ], 200);
+    }
 }
