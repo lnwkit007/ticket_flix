@@ -1,62 +1,184 @@
 <!-- run project for mycomputer : php -S 127.0.0.1:8000 -t public -->
 <!-- run test : php -S YOUR_LOCAL_IP:8000 -t public -->
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Ticket Flix API
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+ระบบ Backend สำหรับเว็บขายตั๋วหนัง พัฒนาด้วย Laravel + Docker + MySQL
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+# 🛠️ ขั้นตอนการรันโปรเจกต์ครั้งแรกสุด (First-time Setup)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+เมื่อเพื่อนร่วมทีมดึงโค้ดไป หรือต้องการนำโปรเจกต์ขึ้นเซิร์ฟเวอร์ใหม่
+ให้เปิด Terminal ที่โฟลเดอร์หลักของโปรเจกต์ แล้วรันคำสั่งตามลำดับดังนี้
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## 1. สร้างไฟล์ตั้งค่าสิ่งแวดล้อม (.env)
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+คัดลอกไฟล์ตั้งค่าระบบจากตัวต้นแบบขึ้นมาใหม่
+เพื่อเอาไว้ใช้เชื่อมต่อฐานข้อมูลภายใน Docker Container
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+```bash
+cp .env.example .env
+```
 
-## Laravel Sponsors
+หลังจากคัดลอกแล้ว ให้เปิดไฟล์ `.env` และตรวจสอบค่าเหล่านี้:
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+```env
+DB_HOST=ticket-flix-db
+DB_PORT=3306
+```
 
-### Premium Partners
+---
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+## 2. สั่งประกอบร่างและเปิดใช้งาน Docker Containers
 
-## Contributing
+คำสั่งนี้จะทำการ:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+* ดาวน์โหลด Docker Images
+* Build Containers
+* เปิดระบบทั้งหมดให้ทำงานเบื้องหลัง
 
-## Code of Conduct
+```bash
+docker compose up -d --build
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+---
 
-## Security Vulnerabilities
+## 3. ติดตั้ง PHP Dependencies
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+สั่งให้ Composer ภายใน Container ของ Laravel ดาวน์โหลดแพ็กเกจทั้งหมด
+และสร้างโฟลเดอร์ `vendor`
 
-## License
+```bash
+docker compose exec ticket-flix-api composer install
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-"# ticket_flix" 
+---
+
+## 4. Generate Laravel Application Key
+
+สร้าง Application Key สำหรับใช้เข้ารหัสข้อมูลภายในระบบ Laravel
+
+```bash
+docker compose exec ticket-flix-api php artisan key:generate
+```
+
+---
+
+## 5. ล้าง Config Cache
+
+สั่งให้ Laravel เคลียร์ค่า Config เก่า
+และอ่านค่าจากไฟล์ `.env` ใหม่ทั้งหมด
+
+```bash
+docker compose exec ticket-flix-api php artisan config:clear
+```
+
+---
+
+## 6. สร้างโครงสร้างฐานข้อมูล (Database Migration)
+
+สร้างตารางทั้งหมดใน MySQL เช่น:
+
+* users
+* sessions
+* movies
+* ฯลฯ
+
+```bash
+docker compose exec ticket-flix-api php artisan migrate
+```
+
+หากระบบถามว่า:
+
+```text
+Would you like to create it? (yes/no)
+```
+
+ให้พิมพ์:
+
+```text
+yes
+```
+
+แล้วกด Enter ได้เลย
+
+---
+
+# 🚀 พิกัดการเข้าใช้งานระบบ
+
+## หน้าแรกของระบบ (Welcome Page)
+
+```text
+http://localhost:8080
+```
+
+---
+
+## พิกัดสำหรับทดสอบ API
+
+ใช้งานผ่าน Postman หรือ Thunder Client ได้ที่:
+
+```text
+http://localhost:8080/api/movies
+```
+
+---
+
+# 🔄 คำสั่งคุม Docker Containers ทั่วไป (Daily Workflow)
+
+หลังจากตั้งค่าครั้งแรกเสร็จแล้ว
+วันต่อ ๆ ไปสามารถใช้คำสั่งสั้น ๆ เหล่านี้แทนได้เลย
+
+---
+
+## เปิดระบบทั้งหมด
+
+```bash
+docker compose up -d
+```
+
+---
+
+## หยุดระบบชั่วคราว
+
+```bash
+docker compose stop
+```
+
+---
+
+## ลบ Containers และ Network เพื่อรีเซ็ตระบบ
+
+```bash
+docker compose down
+```
+
+---
+
+## ตรวจสอบสถานะ Containers
+
+```bash
+docker ps
+```
+
+---
+
+## ดู Log ของ Laravel Container
+
+```bash
+docker compose logs ticket-flix-api
+```
+
+---
+
+# 🧰 Tech Stack
+
+* Laravel
+* PHP
+* Docker
+* MySQL
+* Composer
+
+---
