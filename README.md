@@ -106,6 +106,16 @@ yes
 
 ---
 
+กรณี Server จัดการ Database: รันคำสั่งอัปเดตฐานข้อมูลผ่าน Docker เช่น:
+
+```Bash
+docker-compose exec php-fpm php artisan migrate --force
+```
+(ข้อควรระวัง: บน Production ต้องใส่ --force เสมอ เพราะ Laravel จะถามยืนยันความปลอดภัย หากรันผ่านระบบอัตโนมัติมันจะค้างถ้าไม่มี flag นี้)
+
+
+---
+
 # 🚀 พิกัดการเข้าใช้งานระบบ
 
 ## หน้าแรกของระบบ (Welcome Page)
