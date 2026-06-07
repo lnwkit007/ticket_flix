@@ -5,13 +5,10 @@ RUN apt-get update && apt-get install -y \
     libjpeg62-turbo-dev \
     libfreetype6-dev \
     libzip-dev \
-    zip \
-    unzip \
-    git \
-    curl
+    zip unzip git curl \
+    && rm -rf /var/lib/apt/lists/*
 
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg
-
 RUN docker-php-ext-install pdo_mysql zip gd
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -22,6 +19,6 @@ COPY . .
 
 RUN composer install --no-dev --optimize-autoloader
 
-EXPOSE 8000
+EXPOSE 9000
 
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
+CMD ["php-fpm"]

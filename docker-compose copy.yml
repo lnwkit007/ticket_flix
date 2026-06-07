@@ -10,15 +10,10 @@ services:
       - ticket-flix-db
 
     environment:
-       - APP_KEY=${APP_KEY}      
-       - APP_ENV=${APP_ENV}
-       - APP_DEBUG=${APP_DEBUG}
-       - DB_CONNECTION=mysql
-       - DB_HOST=ticket-flix-db   
-       - DB_PORT=3306
-       - DB_DATABASE=${DB_DATABASE}
-       - DB_USERNAME=${DB_USERNAME}
-       - DB_PASSWORD=${DB_PASSWORD}
+      - DB_HOST=${DB_HOST}
+      - DB_DATABASE=${DB_DATABASE}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
     
   ticket-flix-webserver:
     image: nginx:alpine
