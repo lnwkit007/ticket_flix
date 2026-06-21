@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Route;
 //////////////////////////////// No login required ////////////////////////////
 
 // Auth
-Route::controller(AuthController::class)->group(function () {
+Route::controller(AuthController::class)->middleware('throttle:10,1')->group(function () {
     Route::post('/register', 'register');
     Route::post('/login', 'login');
 });
@@ -44,7 +44,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Ticket
     Route::controller(TicketController::class)->group(function () {
-        Route::post('/ticket/booking', 'bookingTicket');
+        Route::post('/ticket/booking', 'bookingTicket')->middleware('throttle:30,1');
         Route::get('/users/my/tickets', 'getMyBookingHistory');
     });
 
