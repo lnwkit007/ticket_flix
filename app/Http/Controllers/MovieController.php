@@ -164,14 +164,23 @@ class MovieController extends Controller
 
     public function deleteMovie($id): JsonResponse
     {
-        $movie = Movie::findOrFail($id);
+        try {
+            $movie = Movie::findOrFail($id);
 
-        $movie->delete();
+            $movie->delete();
 
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Movie deleted (soft delete) successfull.'
-        ], 200);
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Movie deleted (soft delete) successfull.'
+            ], 200);
+        } catch (\Exception $error) {
+            Log::error("Delete Movie Error : ", $error->getMessage());
+
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Delete movie failed. Please try again later.'
+            ], 500);
+        }
     }
 
 
