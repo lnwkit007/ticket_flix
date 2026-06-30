@@ -61,36 +61,45 @@ class MovieController extends Controller
             'tags.*' => 'exists:movie_tag,id'
         ]);
 
-        $posterPath = null;
+        try {
+            $posterPath = null;
 
-        if ($request->hasFile('movie_poster') && $request->file('movie_poster')->isValid()) {
-            $file = $request->file('movie_poster');
-            $extension = $file->getClientOriginalExtension();
+            if ($request->hasFile('movie_poster') && $request->file('movie_poster')->isValid()) {
+                $file = $request->file('movie_poster');
+                $extension = $file->getClientOriginalExtension();
 
-            $fileName = time() . '_' . uniqid() . '.' . $extension;
+                $fileName = time() . '_' . uniqid() . '.' . $extension;
 
-            $file->move(public_path('storage/movies'), $fileName);
+                $file->move(public_path('storage/movies'), $fileName);
 
-            $posterPath = 'movies/' . $fileName;
+                $posterPath = 'movies/' . $fileName;
+            }
+
+            $createMovie = Movie::create([
+                'movie_title' => $request->movie_title,
+                'movie_synopsis' => $request->movie_synopsis,
+                'movie_poster' => $posterPath
+            ]);
+
+            if ($request->has('tags')) {
+                $createMovie->tags()->sync($request->tags);
+            }
+
+            $createMovie->load('tags');
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Created movie successfully.',
+                'data' => $createMovie
+            ], 201);
+        } catch (\Exception $error) {
+            Log::error("Create Movie Error : ", $error->getMessage());
+
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Create movie failed. Please try again later.'
+            ], 500);
         }
-
-        $createMovie = Movie::create([
-            'movie_title' => $request->movie_title,
-            'movie_synopsis' => $request->movie_synopsis,
-            'movie_poster' => $posterPath
-        ]);
-
-        if ($request->has('tags')) {
-            $createMovie->tags()->sync($request->tags);
-        }
-
-        $createMovie->load('tags');
-
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Created movie successfully.',
-            'data' => $createMovie
-        ], 201);
     }
 
 
