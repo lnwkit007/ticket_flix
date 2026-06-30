@@ -113,43 +113,52 @@ class MovieController extends Controller
             'tags.*' => 'integer|exists:movie_tag,id'
         ]);
 
-        $movie = Movie::findOrFail($id);
+        try {
+            $movie = Movie::findOrFail($id);
 
-        $movie->update(
-            $request->only(['movie_title', 'movie_synopsis'])
-        );
+            $movie->update(
+                $request->only(['movie_title', 'movie_synopsis'])
+            );
 
-        if ($request->has('movie_poster') && $request->file('movie_poster')->isValid()) {
-            if ($movie->movie_poster) {
-                $oldPosterPath = public_path('storage/' . $movie->movie_poster);
+            if ($request->has('movie_poster') && $request->file('movie_poster')->isValid()) {
+                if ($movie->movie_poster) {
+                    $oldPosterPath = public_path('storage/' . $movie->movie_poster);
 
-                if (file_exists($oldPosterPath)) {
-                    unlink($oldPosterPath);
+                    if (file_exists($oldPosterPath)) {
+                        unlink($oldPosterPath);
+                    }
                 }
+
+                $file = $request->file('movie_poster');
+                $extension = $file->getClientOriginalExtension();
+
+                $fileName = time() . '_' . uniqid() . '.' . $extension;
+
+                $file->move(public_path('storage/movies'), $fileName);
+
+                $posterPath = 'movies/' . $fileName;
+                $movie->update(['movie_poster' => $posterPath]);
             }
 
-            $file = $request->file('movie_poster');
-            $extension = $file->getClientOriginalExtension();
+            if ($request->has('tags')) {
+                $movie->tags()->sync($request->tags);
+            }
 
-            $fileName = time() . '_' . uniqid() . '.' . $extension;
+            $movie->load('tags');
 
-            $file->move(public_path('storage/movies'), $fileName);
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Update movie successfully.',
+                'data' => $movie
+            ], 200);
+        } catch (\Exception $error) {
+            Log::error("Update Movie Error : ", $error->getMessage());
 
-            $posterPath = 'movies/' . $fileName;
-            $movie->update(['movie_poster' => $posterPath]);
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Update Movie failed. Please try again later.'
+            ], 500);
         }
-
-        if ($request->has('tags')) {
-            $movie->tags()->sync($request->tags);
-        }
-
-        $movie->load('tags');
-
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Update movie successfully.',
-            'data' => $movie
-        ], 200);
     }
 
 
