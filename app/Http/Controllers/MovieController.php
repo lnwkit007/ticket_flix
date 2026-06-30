@@ -5,18 +5,28 @@ namespace App\Http\Controllers;
 use App\Models\Movie;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class MovieController extends Controller
 {
     public function getMovies(): JsonResponse
     {
-        $movies = Movie::with('tags', 'showtimes.theater.theater_type')->get();
+        try {
+            $movies = Movie::with('tags', 'showtimes.theater.theater_type')->get();
 
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Geted movies successfully.',
-            'data' => $movies
-        ], 200);
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Geted movies successfully.',
+                'data' => $movies
+            ], 200);
+        } catch (\Exception $error) {
+            Log::error('Get Movie Error : ', $error->getMessage());
+
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Could not fetch movies. Please try again later.'
+            ], 500);
+        }
     }
 
 
