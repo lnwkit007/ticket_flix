@@ -89,11 +89,20 @@ class AuthController extends Controller
 
     public function logout(Request $request): JsonResponse
     {
-        $request->user()->currentAccessToken()->delete();
+        try {
+            $request->user()->currentAccessToken()->delete();
 
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Logout successfully.'
-        ], 200);
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Logout successfully.'
+            ], 200);
+        } catch (\Exception $error) {
+            Log::error('Logout Error : ', $error->getMessage());
+
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Could not logout. Please try again later.'
+            ], 500);
+        }
     }
 }
