@@ -32,13 +32,22 @@ class MovieController extends Controller
 
     public function getMovie($id): JsonResponse
     {
-        $movie = Movie::with('showtimes.theater.theater_type')->findOrFail($id);
+        try {
+            $movie = Movie::with('showtimes.theater.theater_type')->findOrFail($id);
 
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Geted movie successfully.',
-            'data' => $movie
-        ], 200);
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Geted movie successfully.',
+                'data' => $movie
+            ], 200);
+        } catch (\Exception $error) {
+            Log::error('Get Movie Error : ', $error->getMessage());
+
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Could not fetch movie. Please try again later.'
+            ], 500);
+        }
     }
 
 
