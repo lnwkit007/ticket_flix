@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Route;
 //////////////////////////////// No login required ////////////////////////////
 
 // Auth
-Route::controller(AuthController::class)->middleware('throttle:10,1')->group(function () {
+Route::controller(AuthController::class)->middleware('throttle:60,1')->group(function () {
     Route::post('/register', 'register');
     Route::post('/login', 'login');
 });
@@ -21,19 +21,34 @@ Route::controller(AuthController::class)->middleware('throttle:10,1')->group(fun
 //////////////////////////////////// Users ////////////////////////////////////
 
 // Movie
-Route::controller(MovieController::class)->group(function () {
+Route::controller(MovieController::class)->middleware('throttle:60,1')->group(function () {
     Route::get('/movies', 'getMovies');
-    Route::get('/movie/{id}', 'getMovie');
+    Route::get('/movies/{id}', 'getMovie');
+});
+
+// MovieTag
+Route::controller(MovieTagController::class)->middleware('throttle:60,1')->group(function () {
+    Route::get('/movie-tags', 'getMovieTags');
 });
 
 // Showtime
-Route::controller(ShowtimeController::class)->group(function () {
+Route::controller(ShowtimeController::class)->middleware('throttle:60,1')->group(function () {
     Route::get('/showtimes', 'getShowtimes');
+});
+
+// Theater
+Route::controller(TheaterController::class)->middleware('throttle:60,1')->group(function () {
+    Route::get('/theaters', 'getTheater');
+});
+
+// TheaterType
+Route::controller(TheaterTypeController::class)->middleware('throttle:60,1')->group(function () {
+    Route::get('/theater-types', 'getTheaterType');
 });
 
 
 /////////////////////////////////// Login required /////////////////////////////////////////////////
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware(['auth:sanctum', 'throttle:30,1'])->group(function () {
 
     // Auth
     Route::controller(AuthController::class)->group(function () {
@@ -44,60 +59,56 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Ticket
     Route::controller(TicketController::class)->group(function () {
-        Route::post('/ticket/booking', 'bookingTicket')->middleware('throttle:30,1');
+        Route::post('/ticket/bookings', 'bookingTicket');
         Route::get('/users/my/tickets', 'getMyBookingHistory');
     });
+});
 
-    //////////////////////////////////// Admin ////////////////////////////////////
+//////////////////////////////////// Admin ////////////////////////////////////
+Route::prefix('admin')->middleware(['auth:sanctum', IsAdmin::class, 'throttle:120,1'])->group(function () {
 
-    Route::prefix('admin')->middleware(IsAdmin::class)->group(function () {
+    // Movie
+    Route::controller(MovieController::class)->group(function () {
+        Route::post('/movies', 'createMovie');
+        Route::patch('/movies/{id}', 'updateMovie');
+        Route::delete('/movies/{id}', 'deleteMovie');
+        Route::get('/movies/restore', 'getRestoreMovie');
+        Route::post('/movies/{id}/restore', 'restoreMovie');
+    });
 
-        // Movie
-        Route::controller(MovieController::class)->group(function () {
-            Route::post('/movie', 'createMovie');
-            Route::patch('/movie/{id}', 'updateMovie');
-            Route::delete('/movie/{id}', 'deleteMovie');
-            Route::get('/movies/restore', 'getRestoreMovie');
-            Route::post('/movie/{id}/restore', 'restoreMovie');
-        });
+    // MovieTag
+    Route::controller(MovieTagController::class)->group(function () {
+        Route::post('/movie-tag', 'createMovieTag');
+        Route::put('/movie-tag/{id}', 'updateMovieTag');
+        Route::delete('/movie-tag/{id}', 'deleteMovieTag');
+        Route::get('/movie-tags/restore', 'getRestoreMovieTag');
+        Route::post('/movie-tag/{id}/restore', 'restoreMovieTag');
+    });
 
-        // MovieTag
-        Route::controller(MovieTagController::class)->group(function () {
-            Route::get('/movie_tags', 'getMovieTags');
-            Route::post('/movie_tag', 'createMovieTag');
-            Route::put('/movie_tag/{id}', 'updateMovieTag');
-            Route::delete('/movie_tag/{id}', 'deleteMovieTag');
-            Route::get('/movie_tags/restore', 'getRestoreMovieTag');
-            Route::post('/movie_tag/{id}/restore', 'restoreMovieTag');
-        });
+    // Showtime
+    Route::controller(ShowtimeController::class)->group(function () {
+        Route::post('/showtime', 'createShowtime');
+        Route::patch('/showtime/{id}', 'updateShowtime');
+        Route::delete('/showtime/{id}', 'deleteShowtime');
+        Route::get('/showtimes/restore', 'getRestoreShowtime');
+        Route::post('/showtime/{id}/restore', 'restoreShowtime');
+    });
 
-        // Showtime
-        Route::controller(ShowtimeController::class)->group(function () {
-            Route::post('/showtime', 'createShowtime');
-            Route::patch('/showtime/{id}', 'updateShowtime');
-            Route::delete('/showtime/{id}', 'deleteShowtime');
-            Route::get('/showtimes/restore', 'getRestoreShowtime');
-            Route::post('/showtime/{id}/restore', 'restoreShowtime');
-        });
+    // Theater
+    Route::controller(TheaterController::class)->group(function () {
+        Route::post('/theater', 'createTheater');
+        Route::patch('/theater/{id}', 'updateTheater');
+        Route::delete('/theater/{id}', 'deleteTheater');
+        Route::get('/theaters/restore', 'getRestoreTheater');
+        Route::post('/theater/{id}/restore', 'restoreTheater');
+    });
 
-        // Theater
-        Route::controller(TheaterController::class)->group(function () {
-            Route::get('/theaters', 'getTheater');
-            Route::post('/theater', 'createTheater');   
-            Route::patch('/theater/{id}', 'updateTheater');
-            Route::delete('/theater/{id}', 'deleteTheater');
-            Route::get('/theaters/restore', 'getRestoreTheater');
-            Route::post('/theater/{id}/restore', 'restoreTheater');
-        });
-
-        // TheaterType
-        Route::controller(TheaterTypeController::class)->group(function () {
-            Route::get('/theater_types', 'getTheaterType');
-            Route::post('/theater_type', 'createTheaterType');
-            Route::put('/theater_type/{id}', 'updateTheaterType');
-            Route::delete('/theater_type/{id}', 'deleteTheaterType');
-            Route::get('/theater_types/restore', 'getRestoreTheaterType');
-            Route::post('/theater_type/{id}/restore', 'restoreTheaterType');
-        });
+    // TheaterType
+    Route::controller(TheaterTypeController::class)->group(function () {
+        Route::post('/theater-type', 'createTheaterType');
+        Route::put('/theater-type/{id}', 'updateTheaterType');
+        Route::delete('/theater-type/{id}', 'deleteTheaterType');
+        Route::get('/theater-types/restore', 'getRestoreTheaterType');
+        Route::post('/theater-type/{id}/restore', 'restoreTheaterType');
     });
 });

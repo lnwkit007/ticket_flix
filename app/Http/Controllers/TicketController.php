@@ -7,26 +7,36 @@ use App\Models\Ticket;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class TicketController extends Controller
 {
     public function getMyBookingHistory(Request $request): JsonResponse
     {
-        $user = $request->user();
+        try {
+            $user = $request->user();
 
-        $tickets = Ticket::where('user_id', $user->id)->with([
-            'user',
-            'showtime.movie.tags',
-            'showtime.theater.theater_type'
-        ])
-            ->orderBy('created_at', 'desc')
-            ->get();
+            $tickets = Ticket::where('user_id', $user->id)->with([
+                'user',
+                'showtime.movie.tags',
+                'showtime.theater.theater_type'
+            ])
+                ->orderBy('created_at', 'desc')
+                ->get();
 
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Geted booking history successfully.',
-            'data' => $tickets
-        ], 200);
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Geted booking history successfully.',
+                'data' => $tickets
+            ], 200);
+        } catch (\Exception $error) {
+            Log::error("BookingHistory Error : ", $error->getMessage());
+
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Could not fetch booking history. Please try again later.'
+            ]);
+        }
     }
 
 
@@ -83,12 +93,13 @@ class TicketController extends Controller
                 'message' => 'Booking successfully.',
                 'data' => $result['ticket']
             ], 201);
-            
         } catch (\Exception $error) {
+            Log::error("Booking Error : ", $error->getMessage());
+
             return response()->json([
                 'status' => 'error',
-                'message' => $error->getMessage()
-            ], 400);
+                'message' => 'Booking failed. Please try again later.'
+            ], 500);
         }
     }
 }
