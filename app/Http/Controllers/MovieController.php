@@ -186,13 +186,22 @@ class MovieController extends Controller
 
     public function getRestoreMovie(): JsonResponse
     {
-        $movie = Movie::onlyTrashed()->with('tags')->get();
+        try {
+            $movie = Movie::onlyTrashed()->with('tags')->get();
 
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Geted movie in trashed successfully.',
-            'data' => $movie
-        ], 200);
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Geted movie in trashed successfully.',
+                'data' => $movie
+            ], 200);
+        } catch (\Exception $error) {
+            Log::error("Get Restore Movie Error : ", $error->getMessage());
+
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Could not fetch restore movie. Please try again later.'
+            ], 500);
+        }
     }
 
 

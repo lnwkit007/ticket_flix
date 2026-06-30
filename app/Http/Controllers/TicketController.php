@@ -35,7 +35,7 @@ class TicketController extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' => 'Could not fetch booking history. Please try again later.'
-            ]);
+            ], 500);
         }
     }
 
