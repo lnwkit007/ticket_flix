@@ -43,7 +43,7 @@ class AuthController extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' => 'Register failed. Please try again later.'
-            ]);
+            ], 500);
         }
     }
 
@@ -55,26 +55,35 @@ class AuthController extends Controller
             'password' => 'required|string'
         ]);
 
-        $user = User::where('user_email', $request->user_email)->first();
+        try {
+            $user = User::where('user_email', $request->user_email)->first();
 
-        if (!$user || !Hash::check($request->password, $user->password)) {
+            if (!$user || !Hash::check($request->password, $user->password)) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Invalid credentials'
+                ], 401);
+            }
+
+            $token = $user->createToken('auth_token')->plainTextToken;
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Login successfully.',
+                'data' => [
+                    'user' => $user,
+                    'token' => $token,
+                    'token_type' => 'Bearer'
+                ]
+            ], 200);
+        } catch (\Exception $error) {
+            Log::error("Login Error : ", $error->getMessage());
+
             return response()->json([
                 'status' => 'error',
-                'message' => 'Invalid credentials'
-            ], 401);
+                'message' => 'An error occurred during login. Please try again later.'
+            ], 500);
         }
-
-        $token = $user->createToken('auth_token')->plainTextToken;
-
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Login successfully.',
-            'data' => [
-                'user' => $user,
-                'token' => $token,
-                'token_type' => 'Bearer'
-            ]
-        ], 200);
     }
 
 
