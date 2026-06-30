@@ -207,13 +207,22 @@ class MovieController extends Controller
 
     public function restoreMovie($id): JsonResponse
     {
-        $movie = Movie::withTrashed()->findOrFail($id);
+        try {
+            $movie = Movie::withTrashed()->findOrFail($id);
 
-        $movie->restore();
+            $movie->restore();
 
-        return response()->json([
-            'status' => 'success',
-            'message' => "Movie '{$movie->movie_title}' restored successfully."
-        ], 200);
+            return response()->json([
+                'status' => 'success',
+                'message' => "Movie '{$movie->movie_title}' restored successfully."
+            ], 200);
+        } catch (\Exception $error) {
+            Log::error("Restore Movie Error : ", $error->getMessage());
+
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Restore movie failed. Please try again later.'
+            ], 500);
+        }
     }
 }
