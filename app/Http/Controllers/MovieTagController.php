@@ -5,18 +5,28 @@ namespace App\Http\Controllers;
 use App\Models\MovieTag;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class MovieTagController extends Controller
 {
     public function getMovieTags(): JsonResponse
     {
-        $movieTag = MovieTag::all();
+        try {
+            $movieTag = MovieTag::all();
 
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Geted movie tag successfully.',
-            'data' => $movieTag
-        ], 200);
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Geted movie tag successfully.',
+                'data' => $movieTag
+            ], 200);
+        } catch (\Exception $error) {
+            Log::error("Get MovieTag Error : ", $error->getMessage());
+
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Could not fetch movie tag. Please try again later.'
+            ], 500);
+        }
     }
 
 
@@ -26,15 +36,24 @@ class MovieTagController extends Controller
             'movie_tag_name' => 'required|string|max:255'
         ]);
 
-        $movieTag = MovieTag::create([
-            'movie_tag_name' => $request->movie_tag_name
-        ]);
+        try {
+            $movieTag = MovieTag::create([
+                'movie_tag_name' => $request->movie_tag_name
+            ]);
 
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Created movie tag successfully.',
-            'data' => $movieTag
-        ], 201);
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Created movie tag successfully.',
+                'data' => $movieTag
+            ], 201);
+        } catch (\Exception $error) {
+            Log::error("Create MovieTag Error : ", $error->getMessage());
+
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Create movie tag failed. Please try again later.'
+            ], 500);
+        }
     }
 
 
@@ -44,52 +63,88 @@ class MovieTagController extends Controller
             'movie_tag_name' => 'required|string|max:255'
         ]);
 
-        $movieTag = MovieTag::findOrFail($id);
+        try {
+            $movieTag = MovieTag::findOrFail($id);
 
-        $movieTag->update($validate);
+            $movieTag->update($validate);
 
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Updated movie tag successfully.',
-            'data' => $movieTag
-        ], 200);
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Updated movie tag successfully.',
+                'data' => $movieTag
+            ], 200);
+        } catch (\Exception $error) {
+            Log::error("Update MovieTag Error : ", $error->getMessage());
+
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Update movie tag failed. Please try again later.'
+            ], 500);
+        }
     }
 
 
     public function deleteMovieTag($id): JsonResponse
     {
-        $movieTag = MovieTag::findOrFail($id);
+        try {
+            $movieTag = MovieTag::findOrFail($id);
 
-        $movieTag->delete();
+            $movieTag->delete();
 
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Movie Tag deleted (soft delete) successfully.'
-        ], 200);
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Movie Tag deleted (soft delete) successfully.'
+            ], 200);
+        } catch (\Exception $error) {
+            Log::error("Delete MovieTag Error : ", $error->getMessage());
+
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Delete movie tag failed. Please try again later.'
+            ], 500);
+        }
     }
 
 
     public function getRestoreMovieTag(): JsonResponse
     {
-        $movieTag = MovieTag::onlyTrashed()->get();
+        try {
+            $movieTag = MovieTag::onlyTrashed()->get();
 
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Geted movie tag in trashed successfully.',
-            'data' => $movieTag
-        ], 200);
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Geted movie tag in trashed successfully.',
+                'data' => $movieTag
+            ], 200);
+        } catch (\Exception $error) {
+            Log::error("Get Restore MovieTag Error : ", $error->getMessage());
+
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Could not fetch restore movie tag. Please try again later.'
+            ], 500);
+        }
     }
 
 
     public function restoreMovieTag($id): JsonResponse
     {
-        $movieTag = MovieTag::withTrashed()->findOrFail($id);
+        try {
+            $movieTag = MovieTag::withTrashed()->findOrFail($id);
 
-        $movieTag->restore();
+            $movieTag->restore();
 
-        return response()->json([
-            'status' => 'success',
-            'message' => "Movie Tag 'id: $movieTag->id' restored successfully."
-        ], 200);
+            return response()->json([
+                'status' => 'success',
+                'message' => "Movie Tag 'id: $movieTag->id' restored successfully."
+            ], 200);
+        } catch (\Exception $error) {
+            Log::error("Restore Movie Tag", $error->getMessage());
+
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Restore movie tag failed. Please try again later.'
+            ], 500);
+        }
     }
 }
