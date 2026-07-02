@@ -1,9 +1,0 @@
-/vendor
-/node_modules
-
-.git/
-.idea/
-.vscode/
-*.phpunit.result.cache
-
-README.md
