@@ -38,7 +38,7 @@ class AuthController extends Controller
                 ]
             ], 201);
         } catch (\Exception $error) {
-            Log::error("Register Error : ", $error->getMessage());
+            Log::error("Register Error : ". $error->getMessage());
 
             return response()->json([
                 'status' => 'error',
@@ -77,7 +77,7 @@ class AuthController extends Controller
                 ]
             ], 200);
         } catch (\Exception $error) {
-            Log::error("Login Error : ", $error->getMessage());
+            Log::error("Login Error : ". $error->getMessage());
 
             return response()->json([
                 'status' => 'error',
@@ -97,7 +97,7 @@ class AuthController extends Controller
                 'message' => 'Logout successfully.'
             ], 200);
         } catch (\Exception $error) {
-            Log::error('Logout Error : ', $error->getMessage());
+            Log::error('Logout Error : '. $error->getMessage());
 
             return response()->json([
                 'status' => 'error',

@@ -20,7 +20,7 @@ class TheaterTypeController extends Controller
                 'data' => $theaterType
             ], 200);
         } catch (\Exception $error) {
-            Log::error("Get TheaterType Error : ", $error->getMessage());
+            Log::error("Get TheaterType Error : ". $error->getMessage());
 
             return response()->json([
                 'status' => 'error',

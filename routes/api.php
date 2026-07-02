@@ -10,7 +10,26 @@ use App\Http\Controllers\TicketController;
 use App\Http\Middleware\IsAdmin;
 use Illuminate\Support\Facades\Route;
 
+
+
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+
 //////////////////////////////// No login required ////////////////////////////
+
+Route::post('/test-upload', function (Request $request) {
+
+    $file = $request->file('movie_poster');
+
+    $path = $file->storeAs(
+        'movies',
+        'test.jpg',
+        'public'
+    );
+
+    dd($path);
+});
 
 // Auth
 Route::controller(AuthController::class)->middleware('throttle:60,1')->group(function () {

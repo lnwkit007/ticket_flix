@@ -6,6 +6,7 @@ use App\Models\Movie;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class MovieController extends Controller
 {
@@ -20,7 +21,7 @@ class MovieController extends Controller
                 'data' => $movies
             ], 200);
         } catch (\Exception $error) {
-            Log::error('Get Movie Error : ', $error->getMessage());
+            Log::error('Get Movie Error : ' . $error->getMessage());
 
             return response()->json([
                 'status' => 'error',
@@ -41,7 +42,7 @@ class MovieController extends Controller
                 'data' => $movie
             ], 200);
         } catch (\Exception $error) {
-            Log::error('Get Movie Error : ', $error->getMessage());
+            Log::error('Get Movie Error : ' . $error->getMessage());
 
             return response()->json([
                 'status' => 'error',
@@ -65,14 +66,16 @@ class MovieController extends Controller
             $posterPath = null;
 
             if ($request->hasFile('movie_poster') && $request->file('movie_poster')->isValid()) {
+
                 $file = $request->file('movie_poster');
-                $extension = $file->getClientOriginalExtension();
 
-                $fileName = time() . '_' . uniqid() . '.' . $extension;
+                $fileName = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
 
-                $file->move(public_path('storage/movies'), $fileName);
-
-                $posterPath = 'movies/' . $fileName;
+                $posterPath = Storage::disk('public')->putFileAs(
+                    'movies',
+                    $file,
+                    $fileName
+                );
             }
 
             $createMovie = Movie::create([
@@ -93,11 +96,11 @@ class MovieController extends Controller
                 'data' => $createMovie
             ], 201);
         } catch (\Exception $error) {
-            Log::error("Create Movie Error : ", $error->getMessage());
+            Log::error("Create Movie Error : " . $error->getMessage());
 
             return response()->json([
                 'status' => 'error',
-                'message' => 'Create movie failed. Please try again later.'
+                'message' => $error->getMessage()
             ], 500);
         }
     }
