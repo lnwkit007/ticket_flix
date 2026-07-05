@@ -70,7 +70,7 @@ Route::prefix('admin')->middleware(['auth:sanctum', IsAdmin::class, 'throttle:12
     // Movie
     Route::controller(MovieController::class)->group(function () {
         Route::post('/movies', 'createMovie');
-        Route::patch('/movies/{id}', 'updateMovie');
+        Route::post('/movies/{id}', 'updateMovie');
         Route::delete('/movies/{id}', 'deleteMovie');
         Route::get('/movies/restore', 'getRestoreMovie');
         Route::post('/movies/{id}/restore', 'restoreMovie');

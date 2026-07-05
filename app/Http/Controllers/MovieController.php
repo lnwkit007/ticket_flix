@@ -69,13 +69,11 @@ class MovieController extends Controller
 
                 $file = $request->file('movie_poster');
 
-                $fileName = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+                $extension = $file->getClientOriginalExtension();
 
-                $posterPath = Storage::disk('public')->putFileAs(
-                    'movies',
-                    $file,
-                    $fileName
-                );
+                $fileName = time() . '_' . uniqid() . '.' . $extension;
+
+                $posterPath = Storage::disk('public')->putFileAs('movies', $file, $fileName);
             }
 
             $createMovie = Movie::create([
@@ -124,22 +122,18 @@ class MovieController extends Controller
             );
 
             if ($request->has('movie_poster') && $request->file('movie_poster')->isValid()) {
-                if ($movie->movie_poster) {
-                    $oldPosterPath = public_path('storage/' . $movie->movie_poster);
-
-                    if (file_exists($oldPosterPath)) {
-                        unlink($oldPosterPath);
-                    }
+                if ($movie->movie_poster && Storage::disk('public')->exists('movies/' . $movie->movie_poster)) {
+                    Storage::disk('public')->delete('movies/' . $movie->movie_poster);
                 }
 
                 $file = $request->file('movie_poster');
+
                 $extension = $file->getClientOriginalExtension();
 
                 $fileName = time() . '_' . uniqid() . '.' . $extension;
 
-                $file->move(public_path('storage/movies'), $fileName);
+                $posterPath = Storage::disk('public')->putFileAs('movies', $file, $fileName);
 
-                $posterPath = 'movies/' . $fileName;
                 $movie->update(['movie_poster' => $posterPath]);
             }
 
