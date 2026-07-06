@@ -2,7 +2,7 @@ export interface movie {
     id: number;
     movie_title: string;
     movie_synopsis: string;
-    movie_poster: string | null;
+    movie_poster: string;
     deleted_at: string | null;
     tags: [
         {

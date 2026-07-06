@@ -3,7 +3,7 @@ import { onMounted } from "vue";
 import { storeToRefs } from "pinia";
 
 // import stores
-import { useMovieStore } from "../stores/movie";
+import { useMovieStore } from "../stores/movieStore";
 const movieStore = useMovieStore();
 
 const { movies, isLoading } = storeToRefs(movieStore);

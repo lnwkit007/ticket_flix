@@ -14,8 +14,8 @@ export const useMovieStore = defineStore('movie', () => {
         try {
             const res = await movieService.getAllMovie();
             movies.value = res.data;
-        } catch (error) {
-            console.error('Loading Movies Error : ', error);
+        } catch (err) {
+            console.error('Loading Movies Error : ', err);
         } finally {
             isLoading.value = false;
         }
@@ -26,4 +26,4 @@ export const useMovieStore = defineStore('movie', () => {
         isLoading,
         loadMovies
     }
-})
+});
