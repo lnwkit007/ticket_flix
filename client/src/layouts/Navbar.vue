@@ -1,10 +1,10 @@
-<script lang="ts">
+<script setup lang="ts">
 import { RouterLink } from "vue-router";
 </script>
 
 <template>
   <nav
-    class="fixed z-2000 w-full border-t-[3.5px] border-[#DE0000] bg-white shadow-[0_1px_3px_rgba(0_0_0/_0.15)]"
+    class="top-0 z-200 w-full border-t-[3.5px] border-[#DE0000] bg-white shadow-[0_1px_3px_rgba(0_0_0/_0.15)] sticky"
   >
     <!-- ////////// Container Layout //////////// -->
     <div
@@ -57,7 +57,7 @@ import { RouterLink } from "vue-router";
 
           <li class="px-3.5 py-7">
             <RouterLink
-              to=""
+              to="/movies"
               class="text-base font-semibold text-[#333333] hover:text-[#DE0000]"
             >
               ภาพยนตร์
@@ -66,7 +66,7 @@ import { RouterLink } from "vue-router";
 
           <li class="px-3.5 py-7">
             <RouterLink
-              to=""
+              to="/concert"
               class="text-base font-semibold text-[#333333] hover:text-[#DE0000]"
             >
               คอนเสิร์ต

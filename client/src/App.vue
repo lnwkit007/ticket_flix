@@ -3,12 +3,15 @@ import { RouterView } from "vue-router";
 
 // import layouts
 import Navbar from "./layouts/Navbar.vue";
+import Banner from "./layouts/Banner.vue";
 </script>
 
 <template>
   <Navbar />
   
-  <main class="min-h-screen pt-15 sm:pt-17 md:pt-21.25">
+  <main class="min-h-screen">
+    <Banner />
+
     <RouterView />
   </main>
 </template>

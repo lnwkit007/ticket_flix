@@ -1,3 +1,32 @@
+export interface moviesApiResponse {
+    status: string;
+    message: string;
+    data: moviesPagination;
+}
+
+export interface moviesPagination {
+    current_page: number;
+    data: movie[];
+    first_page_url: string;
+    from: number;
+    last_page: number;
+    last_page_url: string;
+    links: [
+        {
+            url: string | null;
+            label: string;
+            page: number | null;
+            active: boolean;
+        }
+    ];
+    next_page_url: string | null;
+    path: string;
+    per_page: number;
+    prev_page_url: string | null;
+    to: number;
+    total: number;
+}
+
 export interface movie {
     id: number;
     movie_title: string;
@@ -33,10 +62,4 @@ export interface movie {
             }
         }
     ]
-}
-
-export interface moviesApiResponse {
-    status: string;
-    message: string;
-    data: movie[];
 }

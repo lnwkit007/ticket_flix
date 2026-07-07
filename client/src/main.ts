@@ -1,6 +1,9 @@
-import { createApp } from 'vue'
+import { createApp } from 'vue';
+
+// import package
 import { createPinia } from 'pinia';
 
+// import router
 import router from './router/index.ts';
 
 // import view

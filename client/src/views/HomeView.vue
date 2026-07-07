@@ -16,10 +16,14 @@ onMounted(() => {
 <template>
     <p v-if="isLoading">กำลังโหลด ...</p>
 
-    <div v-else>
-        <div v-for="movie in movies">
+    <div v-else class="flex flex-col gap-2">
+        <div v-for="movie in movies" class="border border-red-500">
             <img :src="movie.movie_poster" :alt="movie.movie_title">
             <p>{{ movie.movie_title }}</p>
+            <p v-for="tag in movie.tags">
+                {{ tag.movie_tag_name }}
+            </p>
+            <p>{{ movie.movie_synopsis }}</p>
         </div>
     </div>
 </template>
