@@ -17,6 +17,8 @@ const { movies, isLoading, pagination } = storeToRefs(movieStore);
 onMounted(() => {
   movieStore.loadMovies();
 });
+
+document.title = "ภาพยนตร์ - TicketFlix.130169.xyz : Ticket Flix";
 </script>
 
 <template>
