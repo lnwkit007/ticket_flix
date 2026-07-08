@@ -23,6 +23,7 @@ onMounted(() => {
   <IntroVideo
     namepage="ภาพยนตร์"
     src="https://www.youtube.com/watch?v=owig3ZmkjGs"
+    poster="https://i.ytimg.com/vi/YSzs7f8W7ik/hq720.jpg?sqp=-oaymwEnCNAFEJQDSFryq4qpAxkIARUAAIhCGAHYAQHiAQoIGBACGAY4AUAB&rs=AOn4CLBHwTReoc54z40prUqTU5FLm58ndw"
   />
 
   <section class="w-full bg-white py-4">
@@ -40,6 +41,7 @@ onMounted(() => {
           </h1>
         </div>
 
+        <!-- ////////// Container Content ////////// -->
         <EventGrid :movies="movies" />
 
         <!-- ////////// Container Pagination ////////// -->

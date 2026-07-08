@@ -6,12 +6,13 @@ import { storeToRefs } from "pinia";
 import IntroVideo from "../components/IntroVideo.vue";
 import EventGrid from "../components/EventGrid.vue";
 import Loading from "../components/Loading.vue";
+import PaginationButton from "../components/PaginationButton.vue";
 
 // import stores
 import { useMovieStore } from "../stores/movieStore.ts";
 const movieStore = useMovieStore();
 
-const { movies, isLoading } = storeToRefs(movieStore);
+const { movies, isLoading, pagination } = storeToRefs(movieStore);
 
 onMounted(() => {
   movieStore.loadMovies();
@@ -22,6 +23,7 @@ onMounted(() => {
   <IntroVideo
     namepage="คอนเสิร์ต"
     src="https://www.youtube.com/watch?v=MCZhRCBRdME"
+    poster="https://i.ytimg.com/vi/MCZhRCBRdME/hq720.jpg?sqp=-oaymwEnCNAFEJQDSFryq4qpAxkIARUAAIhCGAHYAQHiAQoIGBACGAY4AUAB&rs=AOn4CLDw_uoUeC6kthwKpbQAVL52iRowsQ"
   />
 
   <section class="w-full bg-white py-4">
@@ -39,7 +41,14 @@ onMounted(() => {
           </h1>
         </div>
 
+        <!-- ////////// Container Content ////////// -->
         <EventGrid :movies="movies" />
+
+        <!-- ////////// Container Pagination ////////// -->
+        <PaginationButton
+          :pagination="pagination"
+          @link-page="movieStore.loadMovies"
+        />
       </div>
     </div>
   </section>

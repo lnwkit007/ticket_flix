@@ -2,6 +2,7 @@
 const props = defineProps<{
   namepage: string;
   src: string;
+  poster: string;
 }>();
 </script>
 
@@ -39,13 +40,14 @@ const props = defineProps<{
     <!-- ////////// Container Video ////////// -->
     <div class="flex justify-center py-4">
       <section class="w-full max-w-217.5">
-        <media-player
-          :src="src"
-          view-type="video"
-          autoplay
-          poster="https://i.ytimg.com/vi/MCZhRCBRdME/hq720.jpg?sqp=-oaymwEnCNAFEJQDSFryq4qpAxkIARUAAIhCGAHYAQHiAQoIGBACGAY4AUAB&rs=AOn4CLDw_uoUeC6kthwKpbQAVL52iRowsQ"
-        >
-          <media-provider></media-provider>
+        <media-player :src="src" view-type="video" autoplay muted>
+          <media-provider>
+            <media-poster
+              :src="poster"
+              alt="Video Poster"
+              class="vds-poster bg-black/50 object-contain!"
+            ></media-poster>
+          </media-provider>
           <media-video-layout></media-video-layout>
         </media-player>
       </section>

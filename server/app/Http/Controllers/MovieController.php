@@ -13,7 +13,7 @@ class MovieController extends Controller
     public function getMovies(): JsonResponse
     {
         try {
-            $movies = Movie::with('tags', 'showtimes.theater.theater_type')->paginate(2);
+            $movies = Movie::with('tags', 'showtimes.theater.theater_type')->paginate(12);
 
             return response()->json([
                 'status' => 'success',
