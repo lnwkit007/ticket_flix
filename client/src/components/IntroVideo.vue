@@ -40,7 +40,7 @@ const props = defineProps<{
     <!-- ////////// Container Video ////////// -->
     <div class="flex justify-center py-4">
       <section class="w-full max-w-217.5">
-        <media-player :src="src" view-type="video" autoplay muted>
+        <media-player :src="src" view-type="video">
           <media-provider>
             <media-poster
               :src="poster"
