@@ -11,6 +11,6 @@ export default defineConfig({
         tailwindcss(),
     ],
     server: {
-        allowedHosts: ['api-ticket-flix.130169.xyz']
+        allowedHosts: ['api-ticketflix.130169.xyz']
     }
 });
