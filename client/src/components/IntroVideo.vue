@@ -8,7 +8,7 @@ const props = defineProps<{
 
 <template>
   <section
-    class="bg-[url(https://www.thaiticketmajor.com/assets/img/bg_blur-gradient.jpg)] bg-top"
+    class="bg-[url(/images/background/bg_blur-gradient.jpg)] bg-top"
   >
     <!-- ////////// Path ////////// -->
     <nav class="flex justify-center py-4">

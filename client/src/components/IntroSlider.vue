@@ -7,9 +7,10 @@ import { Swiper, SwiperSlide } from "swiper/vue";
 // Import Swiper styles
 import "swiper/css";
 import "swiper/css/pagination";
+import "swiper/css/autoplay";
 
 // import required modules
-import { Pagination } from "swiper/modules";
+import { Pagination, Autoplay } from "swiper/modules";
 
 const ImagesBanners = [
   {
@@ -36,13 +37,19 @@ const ImagesBanners = [
 </script>
 
 <template>
-  <section
-    class="bg-[url(https://www.thaiticketmajor.com/assets/img/bg_blur-gradient.jpg)] bg-top"
-  >
+  <section class="bg-[url(/images/background/bg_blur-black.jpg)] bg-top">
     <div class="flex justify-center py-4">
-      <section class="w-full max-w-217.5">
-        <swiper :pagination="true" :modules="[Pagination]" class="mySwiper">
-          <swiper-slide v-for="ImagesBanner in ImagesBanners">
+      <div class="w-full max-w-217.5">
+        <swiper
+          :pagination="true"
+          :autoplay="{
+            delay: 2000,
+            disableOnInteraction: false,
+          }"
+          :modules="[Pagination, Autoplay]"
+          class="mySwiper"
+        >
+          <swiper-slide v-for="ImagesBanner in ImagesBanners" :key="ImagesBanner.name">
             <RouterLink to="/">
               <img
                 :src="ImagesBanner.src"
@@ -52,14 +59,16 @@ const ImagesBanners = [
             </RouterLink>
           </swiper-slide>
         </swiper>
-      </section>
+      </div>
     </div>
   </section>
 </template>
 
 <style scoped>
-.swiper-pagination-bullet-active {
-  background-color: #ffa31c;
-  border: 1px solid black;
+.mySwiper {
+  --swiper-pagination-color: #de0000;
+
+  --swiper-pagination-bullet-inactive-color: #ffffff;
+  --swiper-pagination-bullet-inactive-opacity: 0.5;
 }
 </style>
