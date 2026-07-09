@@ -7,6 +7,9 @@ import ConcertView from "../views/ConcertView.vue";
 
 const router = createRouter({
     history: createWebHistory(),
+    scrollBehavior(to, from, savedPosition) {
+        return { top: 0 }
+    },
     routes: [
         {
             path: '/',
