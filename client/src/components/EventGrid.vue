@@ -12,9 +12,10 @@ const props = defineProps<{
   <div
     class="grid grid-cols-3 gap-x-3 gap-y-5 md:grid-cols-4 md:gap-x-7 lg:grid-cols-6"
   >
-    <div
+    <RouterLink
       v-for="movie in movies"
       :key="movie.id"
+      to="/"
       class="group flex cursor-pointer flex-col justify-between pb-2"
     >
       <div class="mb-4">
@@ -40,6 +41,6 @@ const props = defineProps<{
           </p>
         </div>
       </RouterLink>
-    </div>
+    </RouterLink>
   </div>
 </template>

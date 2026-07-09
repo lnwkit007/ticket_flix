@@ -4,7 +4,7 @@ import { RouterLink } from "vue-router";
 
 <template>
   <nav
-    class="top-0 z-200 w-full border-t-[3.5px] border-[#DE0000] bg-white shadow-[0_1px_3px_rgba(0_0_0/_0.15)] sticky"
+    class="sticky top-0 z-200 w-full border-t-[3.5px] border-[#DE0000] bg-white shadow-[0_1px_3px_rgba(0_0_0/_0.15)]"
   >
     <!-- ////////// Container Layout //////////// -->
     <div
