@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Movie;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
@@ -58,6 +59,7 @@ class MovieController extends Controller
             'movie_title' => 'required|string|min:3|max:255',
             'movie_synopsis' => 'required|string',
             'movie_poster' => 'required|mimes:jpeg,png,jpg,webp|max:2048',
+            'category_id' => ['required', Rule::exists('categories', 'id')],
             'tags' => 'nullable',
             'tags.*' => 'exists:movie_tag,id'
         ]);
@@ -79,7 +81,8 @@ class MovieController extends Controller
             $createMovie = Movie::create([
                 'movie_title' => $request->movie_title,
                 'movie_synopsis' => $request->movie_synopsis,
-                'movie_poster' => $posterPath
+                'movie_poster' => $posterPath,
+                'category_id' => $request->category_id
             ]);
 
             if ($request->has('tags')) {
@@ -110,6 +113,7 @@ class MovieController extends Controller
             'movie_title' => 'sometimes|string|min:3|max:255',
             'movie_synopsis' => 'sometimes|string|min:3',
             'movie_poster' => 'sometimes|mimes:jpeg,png,jpg,webp|max:2048',
+            'category_id' => ['required', Rule::exists('categories', 'id')],
             'tags' => 'sometimes|array',
             'tags.*' => 'integer|exists:movie_tag,id'
         ]);
@@ -118,7 +122,7 @@ class MovieController extends Controller
             $movie = Movie::findOrFail($id);
 
             $movie->update(
-                $request->only(['movie_title', 'movie_synopsis'])
+                $request->only(['movie_title', 'movie_synopsis', 'category_id'])
             );
 
             if ($request->has('movie_poster') && $request->file('movie_poster')->isValid()) {
