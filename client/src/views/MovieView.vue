@@ -9,10 +9,10 @@ import Loading from "../components/Loading.vue";
 import PaginationButton from "../components/PaginationButton.vue";
 
 // import stores
-import { useMovieStore } from "../stores/movieStore.ts";
-const movieStore = useMovieStore();
+import { useMoviesStore } from "../stores/movieStore.ts";
+const movieStore = useMoviesStore();
 
-const { movies, isLoading, pagination } = storeToRefs(movieStore);
+const { movies, isLoadingMovies, pagination } = storeToRefs(movieStore);
 
 onMounted(() => {
   movieStore.loadMovies();
@@ -30,7 +30,7 @@ document.title = "ภาพยนตร์ - TicketFlix.130169.xyz : Ticket Flix
 
   <section class="w-full bg-white py-4">
     <div class="mx-auto w-full px-5 md:px-4 xl:w-302.5">
-      <div v-if="isLoading" class="flex h-[50vh] items-center justify-center">
+      <div v-if="isLoadingMovies" class="flex h-[50vh] items-center justify-center">
         <Loading />
       </div>
 

@@ -9,13 +9,13 @@ import Loading from "../components/Loading.vue";
 import PaginationButton from "../components/PaginationButton.vue";
 
 // import stores
-import { useMovieStore } from "../stores/movieStore.ts";
-const movieStore = useMovieStore();
+import { useConcertsStore } from "../stores/movieStore.ts";
+const concertsStore = useConcertsStore();
 
-const { movies, isLoading, pagination } = storeToRefs(movieStore);
+const { concerts, isLoadingConcerts, pagination } = storeToRefs(concertsStore);
 
 onMounted(() => {
-  movieStore.loadMovies();
+  concertsStore.loadConcerts();
 });
 
 document.title = "คอนเสิร์ต - TicketFlix.130169.xyz : Ticket Flix";
@@ -30,7 +30,7 @@ document.title = "คอนเสิร์ต - TicketFlix.130169.xyz : Ticket F
 
   <section class="w-full bg-white py-4">
     <div class="mx-auto w-full px-5 md:px-4 xl:w-302.5">
-      <div v-if="isLoading" class="flex h-[50vh] items-center justify-center">
+      <div v-if="isLoadingConcerts" class="flex h-[50vh] items-center justify-center">
         <Loading />
       </div>
 
@@ -44,12 +44,12 @@ document.title = "คอนเสิร์ต - TicketFlix.130169.xyz : Ticket F
         </div>
 
         <!-- ////////// Container Content ////////// -->
-        <EventGrid :movies="movies" />
+        <EventGrid :movies="concerts" />
 
         <!-- ////////// Container Pagination ////////// -->
         <PaginationButton
           :pagination="pagination"
-          @link-page="movieStore.loadMovies"
+          @link-page="concertsStore.loadConcerts"
         />
       </div>
     </div>

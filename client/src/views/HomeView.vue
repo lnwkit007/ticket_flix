@@ -8,13 +8,17 @@ import EventGrid from "../components/EventGrid.vue";
 import Loading from "../components/Loading.vue";
 
 // import stores
-import { useMovieStore } from "../stores/movieStore";
-const movieStore = useMovieStore();
+import { useMoviesStore } from "../stores/movieStore";
+import { useConcertsStore } from "../stores/movieStore.ts";
+const movieStore = useMoviesStore();
+const concertsStore = useConcertsStore();
 
-const { movies, isLoading } = storeToRefs(movieStore);
+const { movies, isLoadingMovies } = storeToRefs(movieStore);
+const { concerts, isLoadingConcerts } = storeToRefs(concertsStore);
 
 onMounted(() => {
   movieStore.loadMovies();
+  concertsStore.loadConcerts();
 });
 
 document.title =
@@ -27,7 +31,7 @@ document.title =
   <!-- ////////// Content Movies ////////// -->
   <section class="w-full bg-white py-4">
     <div class="mx-auto w-full px-5 md:px-4 xl:w-302.5">
-      <div v-if="isLoading" class="flex h-[50vh] items-center justify-center">
+      <div v-if="isLoadingMovies" class="flex h-[50vh] items-center justify-center">
         <Loading />
       </div>
 
@@ -68,7 +72,7 @@ document.title =
   <!-- ////////// Content Concert ////////// -->
   <section class="w-full bg-white py-4">
     <div class="mx-auto w-full px-5 md:px-4 xl:w-302.5">
-      <div v-if="isLoading" class="flex h-[50vh] items-center justify-center">
+      <div v-if="isLoadingConcerts" class="flex h-[50vh] items-center justify-center">
         <Loading />
       </div>
 
@@ -82,7 +86,7 @@ document.title =
         </div>
 
         <!-- ////////// Container Content ////////// -->
-        <EventGrid :movies="movies" />
+        <EventGrid :movies="concerts" />
 
         <!-- ////////// Additional Button ////////// -->
         <div class="mt-5 mb-6 flex items-center justify-center">

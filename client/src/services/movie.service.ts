@@ -8,7 +8,17 @@ export const movieService = {
     },
 
     getMovieById: async (id: number): Promise<moviesApiResponse> => {
-        const res = await api.get<moviesApiResponse>(`/movie/${id}`);
+        const res = await api.get<moviesApiResponse>(`/movies/${id}`);
         return res.data;
-    }
+    },
+
+    getAllConcert: async (page: number | null): Promise<moviesApiResponse> => {
+        const res = await api.get<moviesApiResponse>(`/concerts?page=${page}`);
+        return res.data;
+    },
+
+    getConcertById: async (id: number): Promise<moviesApiResponse> => {
+        const res = await api.get<moviesApiResponse>(`/concerts/${id}`);
+        return res.data;
+    },
 }

@@ -14,7 +14,7 @@ class MovieController extends Controller
     public function getTypeMovies(): JsonResponse 
     {
         try {
-            $movies = Movie::with('category')->where('category_id', 1)->get();
+            $movies = Movie::with('category')->where('category_id', 1)->paginate(12);
 
             return response()->json([
                 'status' => 'success',
@@ -56,7 +56,7 @@ class MovieController extends Controller
     public function getTypeConcerts(): JsonResponse 
     {
         try {
-            $concerts = Movie::with('category')->where('category_id', 2)->get();
+            $concerts = Movie::with('category')->where('category_id', 2)->paginate(12);
 
             return response()->json([
                 'status' => 'success',
