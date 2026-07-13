@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\MovieTagController;
 use App\Http\Controllers\ShowtimeController;
@@ -20,10 +21,21 @@ Route::controller(AuthController::class)->middleware('throttle:60,1')->group(fun
 
 //////////////////////////////////// Users ////////////////////////////////////
 
+// Category
+Route::controller(CategoryController::class)->middleware('throttle:60,1')->group(function () {
+    Route::get('/categories', 'getCategories');
+});
+
 // Movie
+
 Route::controller(MovieController::class)->middleware('throttle:60,1')->group(function () {
-    Route::get('/movies', 'getMovies');
-    Route::get('/movies/{id}', 'getMovie');
+    // type movie
+    Route::get('/movies', 'getTypeMovies');
+    Route::get('/movies/{id}', 'getTypeMovie');
+
+    // type concert
+    Route::get('/concerts', 'getTypeConcerts');
+    Route::get('/concerts/{id}', 'getTypeConcert');
 });
 
 // MovieTag
@@ -66,6 +78,15 @@ Route::middleware(['auth:sanctum', 'throttle:30,1'])->group(function () {
 
 //////////////////////////////////// Admin ////////////////////////////////////
 Route::prefix('admin')->middleware(['auth:sanctum', IsAdmin::class, 'throttle:120,1'])->group(function () {
+
+    // Category
+    Route::controller(CategoryController::class)->group(function () {
+        Route::post('/categories', 'createCategory');
+        Route::post('/categories/{id}', 'updateCategory');
+        Route::post('/categories/{id}', 'deleteCategory');
+        Route::post('/categories/restore', 'getRestoreCategory');
+        Route::post('/categories/{id}/restore', 'restoreCategory');
+    });
 
     // Movie
     Route::controller(MovieController::class)->group(function () {

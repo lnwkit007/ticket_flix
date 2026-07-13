@@ -24,7 +24,7 @@ class CategoryController extends Controller
 
             return response()->json([
                 'status' => 'error',
-                'message' => 'Could not fetch categories. please try again later.'
+                'message' => $error->getMessage()
             ], 500);
         }
     }
@@ -33,7 +33,7 @@ class CategoryController extends Controller
     public function createCategory(Request $request): JsonResponse
     {
         $request->validate([
-            'name' => 'required|number'
+            'name' => 'required|string'
         ]);
 
         try {
@@ -60,7 +60,7 @@ class CategoryController extends Controller
     public function updateCategory(Request $request, $id): JsonResponse
     {
         $validate = $request->validate([
-            'name' => 'required|number'
+            'name' => 'required|string'
         ]);
 
         try {

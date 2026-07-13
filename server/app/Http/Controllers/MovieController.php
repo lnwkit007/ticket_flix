@@ -11,10 +11,10 @@ use Illuminate\Support\Facades\Storage;
 
 class MovieController extends Controller
 {
-    public function getMovies(): JsonResponse
+    public function getTypeMovies(): JsonResponse 
     {
         try {
-            $movies = Movie::with('tags', 'showtimes.theater.theater_type')->paginate(12);
+            $movies = Movie::with('category')->where('category_id', 1)->get();
 
             return response()->json([
                 'status' => 'success',
@@ -22,7 +22,7 @@ class MovieController extends Controller
                 'data' => $movies
             ], 200);
         } catch (\Exception $error) {
-            Log::error('Get Movie Error : ' . $error->getMessage());
+            Log::error('Get Movies Error : ' . $error->getMessage());
 
             return response()->json([
                 'status' => 'error',
@@ -32,10 +32,10 @@ class MovieController extends Controller
     }
 
 
-    public function getMovie($id): JsonResponse
+    public function getTypeMovie($id): JsonResponse
     {
         try {
-            $movie = Movie::with('showtimes.theater.theater_type')->findOrFail($id);
+            $movie = Movie::with('category', 'showtimes.theater.theater_type')->where('category_id', 1)->findOrFail($id);
 
             return response()->json([
                 'status' => 'success',
@@ -48,6 +48,48 @@ class MovieController extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' => 'Could not fetch movie. Please try again later.'
+            ], 500);
+        }
+    }
+
+
+    public function getTypeConcerts(): JsonResponse 
+    {
+        try {
+            $concerts = Movie::with('category')->where('category_id', 2)->get();
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Geted concerts successfully.',
+                'data' => $concerts
+            ], 200);
+        } catch (\Exception $error) {
+            Log::error('Get Concerts Error : ' . $error->getMessage());
+
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Could not fetch concerts. Please try again later.'
+            ], 500);
+        }
+    }
+
+
+    public function getTypeConcert($id): JsonResponse
+    {
+        try {
+            $concert = Movie::with('category', 'showtimes.theater.theater_type')->where('category_id', 2)->findOrFail($id);
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Geted concert successfully.',
+                'data' => $concert
+            ], 200);
+        } catch (\Exception $error) {
+            Log::error('Get Concert Error : ' . $error->getMessage());
+
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Could not fetch concert. Please try again later.'
             ], 500);
         }
     }
