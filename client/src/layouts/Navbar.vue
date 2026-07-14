@@ -1,5 +1,13 @@
 <script setup lang="ts">
 import { RouterLink } from "vue-router";
+
+// import store
+import { useOpenSidebarStore } from "../stores/openSidebarStore";
+const SidebarStore = useOpenSidebarStore();
+
+const openSidebar = () => {
+  SidebarStore.SwitchSidebar();
+};
 </script>
 
 <template>
@@ -11,7 +19,7 @@ import { RouterLink } from "vue-router";
       class="mx-auto flex w-full items-center justify-between px-4 md:px-8 xl:w-302.5 xl:px-0"
     >
       <!-- ////////// Container Menu Mobile ////////// -->
-      <div class="md:hidden">
+      <div class="md:hidden" @click="openSidebar">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="24"
