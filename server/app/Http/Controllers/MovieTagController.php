@@ -20,7 +20,9 @@ class MovieTagController extends Controller
                 'data' => $movieTag
             ], 200);
         } catch (\Exception $error) {
-            Log::error("Get MovieTag Error : ". $error->getMessage());
+            Log::error("Get MovieTag Error", [
+                'exception' => $error
+            ]);
 
             return response()->json([
                 'status' => 'error',
@@ -47,7 +49,9 @@ class MovieTagController extends Controller
                 'data' => $movieTag
             ], 201);
         } catch (\Exception $error) {
-            Log::error("Create MovieTag Error : ". $error->getMessage());
+            Log::error("Create MovieTag Error", [
+                'exception' => $error
+            ]);
 
             return response()->json([
                 'status' => 'error',
@@ -74,7 +78,9 @@ class MovieTagController extends Controller
                 'data' => $movieTag
             ], 200);
         } catch (\Exception $error) {
-            Log::error("Update MovieTag Error : ". $error->getMessage());
+            Log::error("Update MovieTag Error", [
+                'exception' => $error
+            ]);
 
             return response()->json([
                 'status' => 'error',
@@ -96,7 +102,9 @@ class MovieTagController extends Controller
                 'message' => 'Movie Tag deleted (soft delete) successfully.'
             ], 200);
         } catch (\Exception $error) {
-            Log::error("Delete MovieTag Error : ". $error->getMessage());
+            Log::error("Delete MovieTag Error", [
+                'exception' => $error
+            ]);
 
             return response()->json([
                 'status' => 'error',
@@ -117,7 +125,9 @@ class MovieTagController extends Controller
                 'data' => $movieTag
             ], 200);
         } catch (\Exception $error) {
-            Log::error("Get Restore MovieTag Error : ". $error->getMessage());
+            Log::error("Get Restore MovieTag Error", [
+                'exception' => $error
+            ]);
 
             return response()->json([
                 'status' => 'error',
@@ -139,7 +149,9 @@ class MovieTagController extends Controller
                 'message' => "Movie Tag 'id: $movieTag->id' restored successfully."
             ], 200);
         } catch (\Exception $error) {
-            Log::error("Restore Movie Tag Error : ". $error->getMessage());
+            Log::error("Restore Movie Tag Error", [
+                'exception' => $error
+            ]);
 
             return response()->json([
                 'status' => 'error',

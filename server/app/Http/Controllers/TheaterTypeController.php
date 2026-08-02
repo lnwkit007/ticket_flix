@@ -20,7 +20,9 @@ class TheaterTypeController extends Controller
                 'data' => $theaterType
             ], 200);
         } catch (\Exception $error) {
-            Log::error("Get TheaterType Error : ". $error->getMessage());
+            Log::error("Get TheaterType Error", [
+                'exception' => $error
+            ]);
 
             return response()->json([
                 'status' => 'error',
@@ -47,7 +49,9 @@ class TheaterTypeController extends Controller
                 'data' => $theaterType
             ], 201);
         } catch (\Exception $error) {
-            Log::error("Create TheaterType Error : ", $error->getMessage());
+            Log::error("Create TheaterType Error", [
+                'exception' => $error
+            ]);
 
             return response()->json([
                 'status' => 'error',
@@ -74,7 +78,9 @@ class TheaterTypeController extends Controller
                 'data' => $theaterType
             ], 200);
         } catch (\Exception $error) {
-            Log::error("Update TheaterType Error : ", $error->getMessage());
+            Log::error("Update TheaterType Error", [
+                'exception' => $error
+            ]);
 
             return response()->json([
                 'status' => 'error',
@@ -96,7 +102,9 @@ class TheaterTypeController extends Controller
                 'message' => 'TheaterType deleted (soft delete) successfully.'
             ], 200);
         } catch (\Exception $error) {
-            Log::error("Delete TheaterType Error : ", $error->getMessage());
+            Log::error("Delete TheaterType Error", [
+                'exception' => $error
+            ]);
 
             return response()->json([
                 'status' => 'error',
@@ -117,7 +125,9 @@ class TheaterTypeController extends Controller
                 'data' => $theaterType
             ], 200);
         } catch (\Exception $error) {
-            Log::error("Get Restore TheaterType Error : ", $error->getMessage());
+            Log::error("Get Restore TheaterType Error", [
+                'exception' => $error
+            ]);
 
             return response()->json([
                 'status' => 'error',
@@ -139,7 +149,9 @@ class TheaterTypeController extends Controller
                 'message' => "TheaterType 'id: $theaterType->id' restored successfully."
             ], 200);
         } catch (\Exception $error) {
-            Log::error("Restore TheaterType Error : ", $error->getMessage());
+            Log::error("Restore TheaterType Error", [
+                'exception' => $error
+            ]);
 
             return response()->json([
                 'status' => 'error',

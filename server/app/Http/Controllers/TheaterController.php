@@ -21,7 +21,9 @@ class TheaterController extends Controller
                 'data' => $theater
             ], 200);
         } catch (\Exception $error) {
-            Log::error("Get Theater Error : ". $error->getMessage());
+            Log::error("Get Theater Error", [
+                'exception' => $error
+            ]);
 
             return response()->json([
                 'status' => 'error',
@@ -52,7 +54,9 @@ class TheaterController extends Controller
                 'data' => $theater
             ], 201);
         } catch (\Exception $error) {
-            Log::error("Create Theater". $error->getMessage());
+            Log::error("Create Theater", [
+                'exception' => $error
+            ]);
 
             return response()->json([
                 'status' => 'error',
@@ -81,7 +85,9 @@ class TheaterController extends Controller
                 'data' => $theater
             ], 200);
         } catch (\Exception $error) {
-            Log::error("Update Theater Error : ". $error->getMessage());
+            Log::error("Update Theater Error", [
+                'exception' => $error
+            ]);
 
             return response()->json([
                 'status' => 'error',
@@ -103,7 +109,9 @@ class TheaterController extends Controller
                 'message' => 'Theater deleted (soft delete) successfully.'
             ], 200);
         } catch (\Exception $error) {
-            Log::error("Delete Theater Error : ". $error->getMessage());
+            Log::error("Delete Theater Error", [
+                'exception' => $error
+            ]);
 
             return response()->json([
                 'status' => 'error',
@@ -124,7 +132,9 @@ class TheaterController extends Controller
                 'data' => $theater
             ], 200);
         } catch (\Exception $error) {
-            Log::error("Get Restore Theater Error : ". $error->getMessage());
+            Log::error("Get Restore Theater Error", [
+                'exception' => $error
+            ]);
 
             return response()->json([
                 'status' => 'error',
@@ -146,7 +156,9 @@ class TheaterController extends Controller
                 'message' => "Theater 'id: $theater->id' restored successfully."
             ], 200);
         } catch (\Exception $error) {
-            Log::error("Restore Theater Error : ". $error->getMessage());
+            Log::error("Restore Theater Error", [
+                'exception' => $error
+            ]);
 
             return response()->json([
                 'status' => 'error',

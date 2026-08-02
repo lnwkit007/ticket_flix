@@ -20,11 +20,13 @@ class CategoryController extends Controller
                 'data' => $categories
             ], 200);
         } catch (\Exception $error) {
-            Log::error("Get Catagories Error : " . $error->getMessage());
+            Log::error("Get Catagories Error", [
+                'exception' => $error
+            ]);
 
             return response()->json([
                 'status' => 'error',
-                'message' => $error->getMessage()
+                'message' => 'Get Catagory failed. Please try again later.'
             ], 500);
         }
     }
@@ -47,7 +49,9 @@ class CategoryController extends Controller
                 'data' => $categories
             ], 201);
         } catch (\Exception $error) {
-            Log::error("Create Catagory Error : ", $error->getMessage());
+            Log::error("Create Catagory Error", [
+                'exception' => $error
+            ]);
 
             return response()->json([
                 'status' => 'error',
@@ -74,7 +78,9 @@ class CategoryController extends Controller
                 'data' => $category
             ], 200);
         } catch (\Exception $error) {
-            Log::error("Update Catagory Error : ", $error->getMessage());
+            Log::error("Update Catagory Error", [
+                'exception' => $error
+            ]);
 
             return response()->json([
                 'status' => 'error',
@@ -96,7 +102,9 @@ class CategoryController extends Controller
                 'message' => 'Category deleted (soft delete) successfully.'
             ], 200);
         } catch (\Exception $error) {
-            Log::error("Delete Category Error : ", $error->getMessage());
+            Log::error("Delete Category Error", [
+                'exception' => $error
+            ]);
 
             return response()->json([
                 'status' => 'error',
@@ -117,7 +125,9 @@ class CategoryController extends Controller
                 'data' => $category
             ], 200);
         } catch (\Exception $error) {
-            Log::error("Get Restore Category Error : ", $error->getMessage());
+            Log::error("Get Restore Category Error", [
+                'exception' => $error
+            ]);
 
             return response()->json([
                 'status' => 'error',
@@ -138,8 +148,11 @@ class CategoryController extends Controller
                 'status' => 'success',
                 'message' => "TheaterType 'id: $category->id' restored successfully."
             ], 200);
+
         } catch (\Exception $error) {
-            Log::error("Restore Category Error : ", $error->getMessage());
+            Log::error("Restore Category Error", [
+                'exception' => $error
+            ]);
 
             return response()->json([
                 'status' => 'error',

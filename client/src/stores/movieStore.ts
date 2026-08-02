@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import { ref } from "vue";
 import type { movie } from "../types/movie";
 import { movieService } from "../services/movie.service";
+import { authService } from "../services/auth.service";
 
 export const useMoviesStore = defineStore('movies', () => {
 

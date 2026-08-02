@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 
@@ -26,19 +27,21 @@ class AuthController extends Controller
                 'password' => Hash::make($request->password)
             ]);
 
-            $token = $user->createToken('auth_token')->plainTextToken;
+            Auth::login($user);
+
+            $request->session()->regenerate();
 
             return response()->json([
                 'status' => 'success',
                 'message' => 'User registered successfully.',
                 'data' => [
                     'user' => $user,
-                    'token' => $token,
-                    'token_type' => 'Bearer'
                 ]
             ], 201);
         } catch (\Exception $error) {
-            Log::error("Register Error : ". $error->getMessage());
+            Log::error("Register Error", [
+                'exception' => $error
+            ]);
 
             return response()->json([
                 'status' => 'error',
@@ -56,28 +59,26 @@ class AuthController extends Controller
         ]);
 
         try {
-            $user = User::where('user_email', $request->user_email)->first();
-
-            if (!$user || !Hash::check($request->password, $user->password)) {
+            if (!Auth::attempt([
+                'user_email' => $request->user_email,
+                'password' => $request->password
+            ])) {
                 return response()->json([
                     'status' => 'error',
                     'message' => 'Invalid credentials'
                 ], 401);
             }
 
-            $token = $user->createToken('auth_token')->plainTextToken;
+            $request->session()->regenerate();
 
             return response()->json([
                 'status' => 'success',
-                'message' => 'Login successfully.',
-                'data' => [
-                    'user' => $user,
-                    'token' => $token,
-                    'token_type' => 'Bearer'
-                ]
+                'message' => 'Login successfully.'
             ], 200);
         } catch (\Exception $error) {
-            Log::error("Login Error : ". $error->getMessage());
+            Log::error("Login Error", [
+                'exception' => $error
+            ]);
 
             return response()->json([
                 'status' => 'error',
@@ -90,14 +91,20 @@ class AuthController extends Controller
     public function logout(Request $request): JsonResponse
     {
         try {
-            $request->user()->currentAccessToken()->delete();
+            Auth::logout();
+
+            $request->session()->invalidate();
+
+            $request->session()->regenerateToken();
 
             return response()->json([
                 'status' => 'success',
                 'message' => 'Logout successfully.'
             ], 200);
         } catch (\Exception $error) {
-            Log::error('Logout Error : '. $error->getMessage());
+            Log::error("Logout Error", [
+                'exception' => $error
+            ]);
 
             return response()->json([
                 'status' => 'error',

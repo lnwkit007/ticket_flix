@@ -1,194 +1,279 @@
-<!-- run project for mycomputer : php -S 127.0.0.1:8000 -t public -->
-<!-- run test : php -S YOUR_LOCAL_IP:8000 -t public -->
 # Ticket Flix API
 
-ระบบ Backend สำหรับเว็บขายตั๋วหนัง พัฒนาด้วย Laravel + Docker + MySQL
+Backend API สำหรับระบบ **Ticket Flix** พัฒนาด้วย **Laravel 12** โดยใช้ **Laravel Sanctum (SPA Authentication)** สำหรับการยืนยันตัวตนผ่าน **HttpOnly Cookie** รองรับการทำงานร่วมกับ Frontend ที่พัฒนาด้วย Vue.js
 
 ---
 
-# 🛠️ ขั้นตอนการรันโปรเจกต์ครั้งแรกสุด (First-time Setup)
+## Tech Stack
 
-เมื่อเพื่อนร่วมทีมดึงโค้ดไป หรือต้องการนำโปรเจกต์ขึ้นเซิร์ฟเวอร์ใหม่
-ให้เปิด Terminal ที่โฟลเดอร์หลักของโปรเจกต์ แล้วรันคำสั่งตามลำดับดังนี้
+* PHP 8.3+
+* Laravel 12
+* MySQL
+* Laravel Sanctum
+* Session Authentication (HttpOnly Cookie)
+* RESTful API
 
 ---
 
-## 1. สร้างไฟล์ตั้งค่าสิ่งแวดล้อม (.env)
+## Prerequisites
 
-คัดลอกไฟล์ตั้งค่าระบบจากตัวต้นแบบขึ้นมาใหม่
-เพื่อเอาไว้ใช้เชื่อมต่อฐานข้อมูลภายใน Docker Container
+ก่อนเริ่มต้น โปรดตรวจสอบว่าได้ติดตั้งโปรแกรมต่อไปนี้แล้ว
+
+* PHP 8.3 หรือใหม่กว่า
+* Composer
+* MySQL
+* Node.js (สำหรับ Frontend)
+* Git
+
+---
+
+## Installation
+
+### 1. Clone Repository
+
+```bash
+git clone <repository-url>
+cd server
+```
+
+---
+
+### 2. Install Dependencies
+
+```bash
+composer install
+```
+
+---
+
+### 3. Create Environment File
 
 ```bash
 cp .env.example .env
 ```
 
-หลังจากคัดลอกแล้ว ให้เปิดไฟล์ `.env` และตรวจสอบค่าเหล่านี้:
+---
+
+### 4. Generate Application Key
+
+```bash
+php artisan key:generate
+```
+
+---
+
+### 5. Configure Database
+
+แก้ไขไฟล์ `.env`
 
 ```env
-DB_HOST=ticket-flix-db
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
 DB_PORT=3306
+DB_DATABASE=ticket_flix
+DB_USERNAME=root
+DB_PASSWORD=
 ```
 
 ---
 
-## 2. สั่งประกอบร่างและเปิดใช้งาน Docker Containers
-
-คำสั่งนี้จะทำการ:
-
-* ดาวน์โหลด Docker Images
-* Build Containers
-* เปิดระบบทั้งหมดให้ทำงานเบื้องหลัง
+### 6. Run Migration
 
 ```bash
-docker compose up -d --build
+php artisan migrate
 ```
 
----
-
-## 3. ติดตั้ง PHP Dependencies
-
-สั่งให้ Composer ภายใน Container ของ Laravel ดาวน์โหลดแพ็กเกจทั้งหมด
-และสร้างโฟลเดอร์ `vendor`
+หากต้องการข้อมูลตัวอย่าง
 
 ```bash
-docker compose exec ticket-flix-api composer install
+php artisan db:seed
 ```
 
----
-
-## 4. Generate Laravel Application Key
-
-สร้าง Application Key สำหรับใช้เข้ารหัสข้อมูลภายในระบบ Laravel
+หรือ
 
 ```bash
-docker compose exec ticket-flix-api php artisan key:generate
+php artisan migrate --seed
 ```
 
 ---
 
-## 5. ล้าง Config Cache
-
-สั่งให้ Laravel เคลียร์ค่า Config เก่า
-และอ่านค่าจากไฟล์ `.env` ใหม่ทั้งหมด
+### 7. Clear Configuration Cache
 
 ```bash
-docker compose exec ticket-flix-api php artisan config:clear
+php artisan optimize:clear
 ```
 
 ---
 
-## 6. สร้างโครงสร้างฐานข้อมูล (Database Migration)
-
-สร้างตารางทั้งหมดใน MySQL เช่น:
-
-* users
-* sessions
-* movies
-* ฯลฯ
+### 8. Start Development Server
 
 ```bash
-docker compose exec ticket-flix-api php artisan migrate
+php artisan serve
 ```
 
-หากระบบถามว่า:
+Laravel จะทำงานที่
 
-```text
-Would you like to create it? (yes/no)
 ```
-
-ให้พิมพ์:
-
-```text
-yes
-```
-
-แล้วกด Enter ได้เลย
-
----
-
-กรณี Server จัดการ Database: รันคำสั่งอัปเดตฐานข้อมูลผ่าน Docker เช่น:
-
-```Bash
-docker-compose exec php-fpm php artisan migrate --force
-```
-(ข้อควรระวัง: บน Production ต้องใส่ --force เสมอ เพราะ Laravel จะถามยืนยันความปลอดภัย หากรันผ่านระบบอัตโนมัติมันจะค้างถ้าไม่มี flag นี้)
-
-
----
-
-# 🚀 พิกัดการเข้าใช้งานระบบ
-
-## หน้าแรกของระบบ (Welcome Page)
-
-```text
-http://localhost:8080
+http://localhost:8000
 ```
 
 ---
 
-## พิกัดสำหรับทดสอบ API
+# SPA Authentication (Laravel Sanctum)
 
-ใช้งานผ่าน Postman หรือ Thunder Client ได้ที่:
+โปรเจกต์นี้ใช้ **Laravel Sanctum แบบ Stateful SPA Authentication**
 
-```text
-http://localhost:8080/api/movies
+Authentication ทำงานผ่าน
+
+* HttpOnly Cookie
+* Session
+* CSRF Protection
+
+ไม่มีการเก็บ Access Token ไว้ใน LocalStorage หรือ SessionStorage
+
+---
+
+## Authentication Flow
+
+```
+Frontend
+      │
+      ▼
+GET /sanctum/csrf-cookie
+      │
+      ▼
+Laravel ส่ง
+
+- XSRF-TOKEN
+- laravel_session
+
+      │
+      ▼
+POST /api/login
+      │
+      ▼
+Laravel Login
+
+      │
+      ▼
+GET /api/me
+      │
+      ▼
+Authenticated User
 ```
 
 ---
 
-# 🔄 คำสั่งคุม Docker Containers ทั่วไป (Daily Workflow)
+## Important Axios Configuration
 
-หลังจากตั้งค่าครั้งแรกเสร็จแล้ว
-วันต่อ ๆ ไปสามารถใช้คำสั่งสั้น ๆ เหล่านี้แทนได้เลย
+Frontend ต้องตั้งค่า Axios ดังนี้
+
+```ts
+import axios from "axios";
+
+export const api = axios.create({
+    baseURL: "http://localhost:8000",
+    withCredentials: true,
+    withXSRFToken: true,
+});
+```
+
+ก่อน Login ต้องเรียก
+
+```http
+GET /sanctum/csrf-cookie
+```
+
+ทุกครั้ง
 
 ---
 
-## เปิดระบบทั้งหมด
+# API Endpoints
+
+## Authentication
+
+| Method | Endpoint               | Description     |
+| ------ | ---------------------- | --------------- |
+| GET    | `/sanctum/csrf-cookie` | Get CSRF Cookie |
+| POST   | `/api/register`        | Register        |
+| POST   | `/api/login`           | Login           |
+| POST   | `/api/logout`          | Logout          |
+| GET    | `/api/me`              | Current User    |
+
+---
+
+# Environment Setup
+
+หลัง Clone โปรเจกต์
+
+1. คัดลอก `.env.example`
+2. เปลี่ยนชื่อเป็น `.env`
+3. ตั้งค่าฐานข้อมูล
+4. รัน Migration
+5. Generate Application Key
+
+---
+
+# Security
+
+โปรเจกต์นี้ใช้แนวทางดังต่อไปนี้
+
+* Laravel Sanctum
+* HttpOnly Cookie
+* Session Authentication
+* CSRF Protection
+* SameSite Cookie
+* Password Hashing (Bcrypt)
+
+ไม่มีการเก็บ Token ใน
+
+* LocalStorage
+* SessionStorage
+
+เพื่อช่วยลดความเสี่ยงจากการโจมตีแบบ XSS
+
+---
+
+# Development Commands
+
+ติดตั้ง Package
 
 ```bash
-docker compose up -d
+composer install
 ```
 
----
-
-## หยุดระบบชั่วคราว
+Generate Key
 
 ```bash
-docker compose stop
+php artisan key:generate
 ```
 
----
-
-## ลบ Containers และ Network เพื่อรีเซ็ตระบบ
+Run Migration
 
 ```bash
-docker compose down
+php artisan migrate
 ```
 
----
-
-## ตรวจสอบสถานะ Containers
+Run Seeder
 
 ```bash
-docker ps
+php artisan db:seed
 ```
 
----
-
-## ดู Log ของ Laravel Container
+Clear Cache
 
 ```bash
-docker compose logs ticket-flix-api
+php artisan optimize:clear
+```
+
+Start Server
+
+```bash
+php artisan serve
 ```
 
 ---
 
-# 🧰 Tech Stack
+# License
 
-* Laravel
-* PHP
-* Docker
-* MySQL
-* Composer
-
----
+This project is licensed under the MIT License.

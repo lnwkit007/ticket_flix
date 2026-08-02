@@ -33,7 +33,7 @@ watch(
     <div class="flex justify-between border-b border-[#e5e7eb] sm:px-4">
       <div class="p-4">
         <img
-          src="/images/logo/logo-ttm-tm-test.png"
+          src="/images/logo/logo-ticket-flix.png"
           alt="logo nongbualamphu"
           class="w-30"
         />

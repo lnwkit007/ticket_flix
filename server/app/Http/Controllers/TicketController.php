@@ -30,7 +30,9 @@ class TicketController extends Controller
                 'data' => $tickets
             ], 200);
         } catch (\Exception $error) {
-            Log::error("BookingHistory Error : ". $error->getMessage());
+            Log::error("BookingHistory Error", [
+                'exception' => $error
+            ]);
 
             return response()->json([
                 'status' => 'error',
@@ -94,7 +96,9 @@ class TicketController extends Controller
                 'data' => $result['ticket']
             ], 201);
         } catch (\Exception $error) {
-            Log::error("Booking Error : ". $error->getMessage());
+            Log::error("Booking Error", [
+                'exception' => $error
+            ]);
 
             return response()->json([
                 'status' => 'error',

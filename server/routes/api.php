@@ -8,16 +8,9 @@ use App\Http\Controllers\ShowtimeController;
 use App\Http\Controllers\TheaterController;
 use App\Http\Controllers\TheaterTypeController;
 use App\Http\Controllers\TicketController;
+use App\Http\Controllers\UserController;
 use App\Http\Middleware\IsAdmin;
 use Illuminate\Support\Facades\Route;
-
-//////////////////////////////// No login required ////////////////////////////
-
-// Auth
-Route::controller(AuthController::class)->middleware('throttle:60,1')->group(function () {
-    Route::post('/register', 'register');
-    Route::post('/login', 'login');
-});
 
 //////////////////////////////////// Users ////////////////////////////////////
 
@@ -27,7 +20,6 @@ Route::controller(CategoryController::class)->middleware('throttle:60,1')->group
 });
 
 // Movie
-
 Route::controller(MovieController::class)->middleware('throttle:60,1')->group(function () {
     // type movie
     Route::get('/movies', 'getTypeMovies');
@@ -61,10 +53,10 @@ Route::controller(TheaterTypeController::class)->middleware('throttle:60,1')->gr
 
 /////////////////////////////////// Login required /////////////////////////////////////////////////
 Route::middleware(['auth:sanctum', 'throttle:30,1'])->group(function () {
-
-    // Auth
-    Route::controller(AuthController::class)->group(function () {
-        Route::post('/logout', 'logout');
+    
+    // User
+    Route::controller(UserController::class)->group(function () {
+        Route::get('/me', 'me');
     });
 
     //////////////////////////////////// Users ////////////////////////////////////

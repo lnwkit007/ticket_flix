@@ -46,7 +46,7 @@ const openSidebar = () => {
           class="flex h-12 items-center justify-center md:h-auto"
         >
           <img
-            src="/images/logo/logo-ttm-tm-test.png"
+            src="/images/logo/logo-ticket-flix.png"
             alt="logo"
             class="w-27 md:w-37"
           />

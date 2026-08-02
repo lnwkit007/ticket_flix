@@ -21,7 +21,9 @@ class ShowtimeController extends Controller
                 'data' => $showtimes
             ], 200);
         } catch (\Exception $error) {
-            Log::error("Get Showtimes Error : ". $error->getMessage());
+            Log::error("Get Showtimes Error", [
+                'exception' => $error
+            ]);
 
             return response()->json([
                 'status' => 'error',
@@ -54,7 +56,9 @@ class ShowtimeController extends Controller
                 'data' => $showtime
             ], 201);
         } catch (\Exception $error) {
-            Log::error("Create Showtime Error : ". $error->getMessage());
+            Log::error("Create Showtime Error", [
+                'exception' => $error
+            ]);
 
             return response()->json([
                 'status' => 'error',
@@ -84,7 +88,9 @@ class ShowtimeController extends Controller
                 'data' => $showtime
             ], 200);
         } catch (\Exception $error) {
-            Log::error("Update Showtime Error : ". $error->getMessage());
+            Log::error("Update Showtime Error", [
+                'exception' => $error
+            ]);
 
             return response()->json([
                 'status' => 'error',
@@ -106,7 +112,9 @@ class ShowtimeController extends Controller
                 'message' => 'Showtime deleted (soft delete) successfully.'
             ], 200);
         } catch (\Exception $error) {
-            Log::error("Delete Showtime Error : ". $error->getMessage());
+            Log::error("Delete Showtime Error", [
+                'exception' => $error
+            ]);
 
             return response()->json([
                 'status' => 'error',
@@ -127,7 +135,9 @@ class ShowtimeController extends Controller
                 'data' => $showtime
             ], 200);
         } catch (\Exception $error) {
-            Log::error("Get Restore Showtime Error : ". $error->getMessage());
+            Log::error("Get Restore Showtime Error", [
+                'exception' => $error
+            ]);
 
             return response()->json([
                 'status' => 'error',
@@ -149,7 +159,9 @@ class ShowtimeController extends Controller
                 'message' => "Showtime 'id: $showtime->id' restored successfully."
             ], 200);
         } catch (\Exception $error) {
-            Log::error("Restore Showtime Error : ", $error->getMessage());
+            Log::error("Restore Showtime Error", [
+                'exception' => $error
+            ]);
 
             return response()->json([
                 'status' => 'error',

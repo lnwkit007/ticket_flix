@@ -22,7 +22,9 @@ class MovieController extends Controller
                 'data' => $movies
             ], 200);
         } catch (\Exception $error) {
-            Log::error('Get Movies Error : ' . $error->getMessage());
+            Log::error("Get Movies Error", [
+                'exception' => $error
+            ]);
 
             return response()->json([
                 'status' => 'error',
@@ -43,7 +45,9 @@ class MovieController extends Controller
                 'data' => $movie
             ], 200);
         } catch (\Exception $error) {
-            Log::error('Get Movie Error : ' . $error->getMessage());
+            Log::error("Get Movie Error", [
+                'exception' => $error
+            ]);
 
             return response()->json([
                 'status' => 'error',
@@ -64,7 +68,9 @@ class MovieController extends Controller
                 'data' => $concerts
             ], 200);
         } catch (\Exception $error) {
-            Log::error('Get Concerts Error : ' . $error->getMessage());
+            Log::error("Get Concerts Error", [
+                'exception' => $error
+            ]);
 
             return response()->json([
                 'status' => 'error',
@@ -85,7 +91,9 @@ class MovieController extends Controller
                 'data' => $concert
             ], 200);
         } catch (\Exception $error) {
-            Log::error('Get Concert Error : ' . $error->getMessage());
+            Log::error("Get Concert Error", [
+                'exception' => $error
+            ]);
 
             return response()->json([
                 'status' => 'error',
@@ -139,7 +147,9 @@ class MovieController extends Controller
                 'data' => $createMovie
             ], 201);
         } catch (\Exception $error) {
-            Log::error("Create Movie Error : " . $error->getMessage());
+            Log::error("Create Movie Error", [
+                'exception' => $error
+            ]);
 
             return response()->json([
                 'status' => 'error',
@@ -195,7 +205,9 @@ class MovieController extends Controller
                 'data' => $movie
             ], 200);
         } catch (\Exception $error) {
-            Log::error("Update Movie Error : ", $error->getMessage());
+            Log::error("Update Movie Error", [
+                'exception' => $error
+            ]);
 
             return response()->json([
                 'status' => 'error',
@@ -217,7 +229,9 @@ class MovieController extends Controller
                 'message' => 'Movie deleted (soft delete) successfull.'
             ], 200);
         } catch (\Exception $error) {
-            Log::error("Delete Movie Error : ", $error->getMessage());
+            Log::error("Delete Movie Error", [
+                'exception' => $error
+            ]);
 
             return response()->json([
                 'status' => 'error',
@@ -238,7 +252,9 @@ class MovieController extends Controller
                 'data' => $movie
             ], 200);
         } catch (\Exception $error) {
-            Log::error("Get Restore Movie Error : ", $error->getMessage());
+            Log::error("Get Restore Movie Error", [
+                'exception' => $error
+            ]);
 
             return response()->json([
                 'status' => 'error',
@@ -260,7 +276,9 @@ class MovieController extends Controller
                 'message' => "Movie '{$movie->movie_title}' restored successfully."
             ], 200);
         } catch (\Exception $error) {
-            Log::error("Restore Movie Error : ", $error->getMessage());
+            Log::error("Restore Movie Error", [
+                'exception' => $error
+            ]);
 
             return response()->json([
                 'status' => 'error',
