@@ -8,17 +8,18 @@ import EventGrid from "../components/EventGrid.vue";
 import Loading from "../components/Loading.vue";
 
 // import stores
-import { useMoviesStore } from "../stores/movieStore";
-import { useConcertsStore } from "../stores/movieStore.ts";
+import { useMoviesStore } from "../stores/movie/movieStore.ts";
+import { useConcertsStore } from "../stores/concert/concertStore.ts";
+
 const movieStore = useMoviesStore();
 const concertsStore = useConcertsStore();
 
 const { movies, isLoadingMovies } = storeToRefs(movieStore);
 const { concerts, isLoadingConcerts } = storeToRefs(concertsStore);
 
-onMounted(() => {
-  movieStore.loadMovies();
-  concertsStore.loadConcerts();
+onMounted(async () => {
+  await movieStore.loadMovies();
+  await concertsStore.loadConcerts();
 });
 
 document.title =

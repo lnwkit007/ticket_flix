@@ -1,5 +1,5 @@
-import api from "./api";
-import type { moviesApiResponse } from "../types/movie";
+import api from "../api";
+import type { moviesApiResponse } from "../../types/movie";
 
 export const movieService = {
     getAllMovie: async (page: number | null): Promise<moviesApiResponse> => {

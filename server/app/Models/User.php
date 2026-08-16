@@ -14,7 +14,7 @@ class User extends Authenticatable
 
     protected $table = 'users';
     protected $fillable = ['user_name', 'user_email', 'password', 'role'];
-    protected $hidden = ['password', 'remember_token'];
+    protected $hidden = ['password', 'remember_token', 'created_at', 'updated_at'];
 
     public function tickets(): HasMany
     {

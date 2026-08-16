@@ -18,7 +18,7 @@ const props = defineProps<{
       to="/"
       class="group flex cursor-pointer flex-col justify-between pb-2"
     >
-      <div class="mb-4">
+      <div class="mb-4 flex flex-col">
         <img
           :src="movie.movie_poster"
           :alt="movie.movie_title"

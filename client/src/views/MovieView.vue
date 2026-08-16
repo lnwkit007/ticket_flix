@@ -9,7 +9,7 @@ import Loading from "../components/Loading.vue";
 import PaginationButton from "../components/PaginationButton.vue";
 
 // import stores
-import { useMoviesStore } from "../stores/movieStore.ts";
+import { useMoviesStore } from "../stores/movie/movieStore.ts";
 const movieStore = useMoviesStore();
 
 const { movies, isLoadingMovies, pagination } = storeToRefs(movieStore);
