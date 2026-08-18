@@ -75,8 +75,8 @@ Route::prefix('admin')->middleware(['auth:sanctum', IsAdmin::class, 'throttle:12
     Route::controller(CategoryController::class)->group(function () {
         Route::post('/categories', 'createCategory');
         Route::post('/categories/{id}', 'updateCategory');
-        Route::post('/categories/{id}', 'deleteCategory');
-        Route::post('/categories/restore', 'getRestoreCategory');
+        Route::delete('/categories/{id}', 'deleteCategory');
+        Route::get('/categories/restore', 'getRestoreCategory');
         Route::post('/categories/{id}/restore', 'restoreCategory');
     });
 
