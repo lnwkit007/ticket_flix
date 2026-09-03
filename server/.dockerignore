@@ -1,9 +1,8 @@
-/node_modules
-/vendor
-/.git
-/.idea
-/.vscode
-.env
-.env.backup
-docker-compose.yml
+vendor
+node_modules
+bootstrap/cache/*.php
+!bootstrap/cache/.gitignore
+.git
+.idea
+.vscode
 Dockerfile
