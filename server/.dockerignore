@@ -1,9 +1,9 @@
-/vendor
 /node_modules
-
-.git/
-.idea/
-.vscode/
-*.phpunit.result.cache
-
-README.md
+/vendor
+/.git
+/.idea
+/.vscode
+.env
+.env.backup
+docker-compose.yml
+Dockerfile
